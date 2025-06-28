@@ -1,0 +1,14 @@
+.section_card_list {
+  margin: 0px 352px;
+  margin-top: 100px;
+  .container_card_list {
+    .title_text {
+    }
+    .container_cards {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+  }
+}
