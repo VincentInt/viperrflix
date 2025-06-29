@@ -1,8 +1,9 @@
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import MainPage from "../Page/MainPage";
 
 const Routers = () => {
+
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>

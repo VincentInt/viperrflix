@@ -1,55 +1,5 @@
-.container_info_page {
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 380px;
-  .info_source_btn {
-  }
-  h1 {
-    font-size: 56px;
-    font-weight: 700;
-  }
-  .container_info {
+  .info_page {
     display: flex;
-    align-items: center;
-    gap: 25px;
-    .genres {
-      padding-left: 8px;
-    }
-    .runtime {
-      min-width: 80px;
-    }
-    .release_date {
-      min-width: 200px;
-    }
-    .rating {
-      min-width: 100px;
-
-    }
-    .container_item_info_page {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    .line {
-      width: 2px;
-      height: 30px;
-      background-color: white;
-    }
+    flex-direction: column;
+    gap: 10px;
   }
-  .p_text_description {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* number of lines to show */
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    min-height: 400%;
-    max-width: 720px;
-    font-size: 24px;
-    font-weight: 500;
-    margin-top: 25px;
-
-  }
-}

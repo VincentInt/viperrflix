@@ -1,13 +1,27 @@
 import "./Slider.css";
-import leftArrowImg from "../../../../../public/img/icon/Vector (3).png";
-import rightArrowImg from "../../../../../public/img/icon/Vector (4).png";
+import leftArrowImg from "../../../../../../public/img/icon/Vector (3).png";
+import rightArrowImg from "../../../../../../public/img/icon/Vector (4).png";
+
+import LoadIndicator from "../../../../../UI/LoadIndicator/LoadIndicator";
 
 import { useEffect, useRef, useState } from "react";
-import LoadIndicator from "../../../../UI/LoadIndicator/LoadIndicator";
+import { onLoadImg } from "../../../../../utils/onLoadImg";
 
 type SlideItemType = {
-  id: number;
+  adult: boolean;
   backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
 };
 type propsType = {
   data: SlideItemType[];
@@ -16,7 +30,7 @@ type propsType = {
 };
 
 const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
-  const [dataImgIndex, setDataImgIndex] = useState<number[]>([]);
+  const [dataImgLoadingIndex, setDataImgLoadingIndex] = useState<number[]>([]);
   const containerSliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,20 +41,21 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       }px)`;
     }
   }, [stateSlider]);
+
   useEffect(() => {
     for (const key in data) {
-      const img = new Image();
-      img.onload = () => setDataImgIndex((prev) => [...prev, +key]);
-      img.src = data[key].backdrop_path;
+      onLoadImg(
+        () => setDataImgLoadingIndex((prev) => [...prev, +key]),
+        "https://image.tmdb.org/t/p/w500" + data[key].poster_path
+      );
     }
   }, [data]);
+
   const onClickCardSlider = (indexCard: number) => {
     if (stateSlider === indexCard) return;
-    if (stateSlider > indexCard)
-      onChangeClickBtnSlider(stateSlider - indexCard);
-    if (stateSlider < indexCard)
-      onChangeClickBtnSlider(indexCard - stateSlider);
+    onChangeClickBtnSlider(indexCard - stateSlider);
   };
+
   return (
     <div className="container_banner_nav">
       <div className="container_btn">
@@ -58,7 +73,6 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
             const width =
               containerSliderRef.current.clientWidth / 8 - 25 / 2 / 6;
             const height = width / 0.66;
-
             return (
               <div
                 key={index}
@@ -66,7 +80,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
                 className="container_img"
                 style={{ minWidth: `${width}px`, minHeight: `${height}px` }}
               >
-                {dataImgIndex.includes(index) ? (
+                {dataImgLoadingIndex.includes(index) ? (
                   <img
                     className={index === stateSlider ? "chosen" : "not_chosen"}
                     style={{
@@ -76,7 +90,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
                           ? `${height}px`
                           : `${height / 1.1}px`,
                     }}
-                    src={item.backdrop_path}
+                    src={"https://image.tmdb.org/t/p/w500" + item.poster_path}
                     alt="state_img"
                   />
                 ) : (
