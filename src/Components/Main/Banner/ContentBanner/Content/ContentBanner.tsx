@@ -34,7 +34,7 @@ const animationStyleElem = "animation_appearance ease-in-out forwards";
 const animationReverseStyleElem =
   "animation_appearance_reverse  ease-in-out forwards";
 
-const Content = ({ data, animationMove, allGenres }: propsType) => {
+const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
   return (
     <div className="container_info_page">
       <div>
@@ -163,4 +163,4 @@ const Content = ({ data, animationMove, allGenres }: propsType) => {
   );
 };
 
-export default Content;
+export default ContentBanner;

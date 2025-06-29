@@ -2,6 +2,7 @@
   .container_btn {
     .loading {
       width: 80px;
+      height: 40px;
     }
   }
   .container_state_img_page {

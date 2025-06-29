@@ -1,7 +1,5 @@
-import "./ContentBanner.css";
-
 import LoadingContentBanner from "./LoadingContentBanner/LoadingContentBanner";
-import Content from "./Content/Content";
+import ContentBanner from "./Content/ContentBanner";
 
 type SlideItemType = {
   adult: boolean;
@@ -30,11 +28,11 @@ type propsType = {
   allGenres: GenresItemType[];
 };
 
-const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
+const ContentLoaderBanner = ({ data, animationMove, allGenres }: propsType) => {
   return (
     <>
       {data ? (
-        <Content
+        <ContentBanner
           data={data}
           animationMove={animationMove}
           allGenres={allGenres}
@@ -46,4 +44,4 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
   );
 };
 
-export default ContentBanner;
+export default ContentLoaderBanner;

@@ -1,10 +1,11 @@
 import "./Banner.css";
-import { useEffect, useState } from "react";
-import ContentBanner from "./ContentBanner/ContentLoaderContentBanner";
-import { onLoadImg } from "../../../utils/onLoadImg";
+
 import LoadIndicator from "../../../UI/LoadIndicator/LoadIndicator";
-import LoadingSlider from "./Slider/LoadingSlider/LoadingSlider";
 import ContentLoadingSlider from "./Slider/ContentLoaderSlider";
+import ContentLoaderBanner from "./ContentBanner/ContentLoaderContentBanner";
+
+import { useEffect, useState } from "react";
+import { onLoadImg } from "../../../utils/onLoadImg";
 
 type SlideItemType = {
   adult: boolean;
@@ -131,7 +132,7 @@ const Banner = () => {
       </div>
       <div className="container_content">
         <div className="content">
-          <ContentBanner
+          <ContentLoaderBanner
             allGenres={allGenres}
             animationMove={animationMove}
             data={dataBanner[stateSlider]}
