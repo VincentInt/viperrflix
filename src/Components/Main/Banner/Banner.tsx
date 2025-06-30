@@ -1,82 +1,50 @@
 import "./Banner.css";
-
 import LoadIndicator from "../../../UI/LoadIndicator/LoadIndicator";
 import ContentLoadingSlider from "./Slider/ContentLoaderSlider";
 import ContentLoaderBanner from "./ContentBanner/ContentLoaderContentBanner";
-
 import { useEffect, useState } from "react";
-import { onLoadImg } from "../../../utils/onLoadImg";
+import type { OmdbResponse } from "../../../utils/type/OmdbType";
+import type { TraktMovie } from "../../../utils/type/TraktMovieType";
 
-type SlideItemType = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
-type GenresItemType = {
-  id: number;
-  name: string;
-};
 const animationStyleElem = "animation_appearance ease-in-out forwards";
 const animationReverseStyleElem =
   "animation_appearance_reverse  ease-in-out forwards";
 
 const Banner = () => {
-  const [allGenres, setAllGenres] = useState<GenresItemType[]>([]);
-  const [dataBanner, setDataBanner] = useState<SlideItemType[]>([]);
+  const [dataPopularMovies, setDataPopularMovies] = useState<TraktMovie[]>([]);
+  const [dataBanner, setDataBanner] = useState<OmdbResponse[]>([]);
   const [stateSlider, setStateSlider] = useState<number>(0);
-
-  const [dataImgLoadingIndex, setDataImgLoadingIndex] = useState<number[]>([]);
   const [animationMove, setAnimationMove] = useState<false | number>(false);
+  const [moveStatus, setMoveStatus] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=8fa2f286c8c7b7739bd2967da3ff4aa5&language=ru-RU`
-    )
+    const URL_POPULAR_MOVIE = "https://api.trakt.tv/movies/popular";
+
+    fetch(URL_POPULAR_MOVIE, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key":
+          "51c0cd2200c2a8a981a90cba506d3be1a337517a9e646786aefae6b8704890d4",
+      },
+    })
       .then((res) => res.json())
-      .then((json) => setAllGenres(json.genres))
+      .then((json) => setDataPopularMovies(json))
       .catch((err) => new Error(err));
   }, []);
-
   useEffect(() => {
-    fetch(
-      "https://api.themoviedb.org/3/movie/popular?api_key=8fa2f286c8c7b7739bd2967da3ff4aa5&language=ru-RU&page=1"
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        const filteredNullFields = json.result.filter((item: SlideItemType) => {
-          for (const key in item) {
-            const elem = item[key as keyof SlideItemType];
-            if (elem === null || elem === "" || elem === undefined)
-              return false;
-          }
-          return true;
-        });
-        setDataBanner(filteredNullFields);
-      })
-      .catch((err) => new Error(err));
-  }, []);
+    if (dataPopularMovies.length !== 0) {
+      const URL_BANNER_MOVIES = "https://www.omdbapi.com/?apikey=4c10715f";
 
-  useEffect(() => {
-    if (dataBanner.length !== 0) {
-      for (const key in dataBanner) {
-        onLoadImg(
-          () => setDataImgLoadingIndex((prev) => [...prev, +key]),
-          "https://image.tmdb.org/t/p/w1920" + dataBanner[key].backdrop_path
-        );
-      }
+      dataPopularMovies.forEach((item: TraktMovie) => {
+        fetch(URL_BANNER_MOVIES + `&i=${item.ids.imdb}`)
+          .then((res) => res.json())
+          .then((json) => setDataBanner((prev) => [...prev, json]))
+          .catch((err) => new Error(err));
+      });
     }
-  }, [dataBanner]);
+  }, [dataPopularMovies]);
 
   useEffect(() => {
     if (typeof animationMove === "number") {
@@ -84,15 +52,18 @@ const Banner = () => {
         setAnimationMove(false);
         onMoveSlider(animationMove);
       }, 800);
+      setTimeout(() => {
+        setMoveStatus(true);
+      }, 2200);
     }
   }, [animationMove]);
 
   function onChangeClickBtnSlider(move: number) {
-    if (animationMove === false) {
+    if (animationMove === false && moveStatus) {
       setAnimationMove(move);
+      setMoveStatus(false);
     }
   }
-
   function onMoveSlider(move: number) {
     const indexMove = stateSlider + move;
     const dataBannerLength = dataBanner.length - 1;
@@ -105,7 +76,6 @@ const Banner = () => {
       setStateSlider(indexMove);
     }
   }
-
   return (
     <section className="container_banner">
       <div
@@ -117,13 +87,10 @@ const Banner = () => {
         className="container_img_page"
       >
         <div className="vignette"></div>
-        {dataImgLoadingIndex.includes(stateSlider) ? (
+        {dataBanner.length ? (
           <img
             className="page_img"
-            src={
-              "https://image.tmdb.org/t/p/w1920" +
-              dataBanner[stateSlider]?.backdrop_path
-            }
+            src={dataBanner[stateSlider]?.Poster}
             alt="background_img"
           />
         ) : (
@@ -133,7 +100,6 @@ const Banner = () => {
       <div className="container_content">
         <div className="content">
           <ContentLoaderBanner
-            allGenres={allGenres}
             animationMove={animationMove}
             data={dataBanner[stateSlider]}
           />

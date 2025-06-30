@@ -27,16 +27,20 @@
     width: 100%;
     height: 100%;
     .vignette {
+      z-index: 2;
       top: 0;
       position: absolute;
       width: 100%;
       height: 100%;
-      background: radial-gradient(rgba(0, 0, 0, 0.057), rgba(0, 0, 0, 1));
+      background: radial-gradient(rgba(0, 0, 0, 0.043), rgba(0, 0, 0, 0.706));
     }
     .page_img {
+      z-index: 1;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: 0px 10%;
+      filter: blur(10px);
     }
   }
   .container_content {

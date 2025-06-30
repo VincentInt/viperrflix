@@ -1,40 +1,21 @@
+import "./ContentBanner.css";
 import starImg from "../../../../../../public/img/icon/Star 1.png";
 import streamServiceImg from "../../../../../../public/img/image 2.png";
 import favoriteImg from "../../../../../../public/img/icon/Vector (1).png";
 import listImg from "../../../../../../public/img/icon/Vector (2).png";
+import type { OmdbResponse } from "../../../../../utils/type/OmdbType";
 
-type SlideItemType = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
 type AnimationMoveType = false | number;
-type GenresItemType = {
-  id: number;
-  name: string;
-};
 type propsType = {
-  data: SlideItemType;
+  data: OmdbResponse;
   animationMove: AnimationMoveType;
-  allGenres: GenresItemType[];
 };
 
 const animationStyleElem = "animation_appearance ease-in-out forwards";
 const animationReverseStyleElem =
   "animation_appearance_reverse  ease-in-out forwards";
 
-const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
+const ContentBanner = ({ data, animationMove }: propsType) => {
   return (
     <div className="container_info_page">
       <div>
@@ -49,7 +30,7 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
                 }
           }
         >
-          {data?.title}
+          {data?.Title}
         </h1>
         <div
           className="container_info"
@@ -76,7 +57,7 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
             }
           >
             <img src={starImg} alt="star_img" />
-            <h3>{Math.floor(data?.vote_average * 10) / 10}</h3>
+            <h3>{data?.imdbRating}</h3>
           </div>
           <div className="line"></div>
           <div
@@ -91,7 +72,7 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
                   }
             }
           >
-            <h3>{data?.release_date}</h3>
+            <h3>{data?.Released}</h3>
           </div>
           <div className="line"></div>
           <div
@@ -106,12 +87,7 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
                   }
             }
           >
-            {data?.genre_ids?.map((item: number, index: number) => {
-              const findGenre = allGenres.find(
-                (itemFind) => itemFind.id === item
-              );
-              return <h3 key={index}>{findGenre?.name}</h3>;
-            })}
+            <h3> {data.Genre}</h3>
           </div>
         </div>
         <p
@@ -126,7 +102,7 @@ const ContentBanner = ({ data, animationMove, allGenres }: propsType) => {
                 }
           }
         >
-          {data?.overview}
+          {data?.Plot}
         </p>
       </div>
       <div

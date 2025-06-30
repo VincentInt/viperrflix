@@ -2,7 +2,7 @@ import "./LoadingSlider.css";
 
 const LoadingSlider = () => {
   return (
-    <div className="container_banner_nav">
+    <div className="container_banner_nav_load">
       <div className="container_btn">
         <div className="loading load_title">
           <div className="glow"></div>

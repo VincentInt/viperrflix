@@ -10,13 +10,12 @@
   }
   .container_window {
     overflow: hidden;
-    margin-top: 15px;
+    margin-top: 25px;
   }
   .container_state_img_page {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
     transition: transform 0.2s ease-in-out;
     .container_img {
       display: flex;

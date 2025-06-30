@@ -1,30 +1,13 @@
 import "./Slider.css";
 import leftArrowImg from "../../../../../../public/img/icon/Vector (3).png";
 import rightArrowImg from "../../../../../../public/img/icon/Vector (4).png";
-
 import LoadIndicator from "../../../../../UI/LoadIndicator/LoadIndicator";
-
 import { useEffect, useRef, useState } from "react";
-import { onLoadImg } from "../../../../../utils/onLoadImg";
+import { onLoadImg } from "../../../../../utils/onLoadImg/onLoadImg.ts";
+import type { OmdbResponse } from "../../../../../utils/type/OmdbType.ts";
 
-type SlideItemType = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
 type propsType = {
-  data: SlideItemType[];
+  data: OmdbResponse[];
   stateSlider: number;
   onChangeClickBtnSlider: (move: number) => any;
 };
@@ -32,12 +15,24 @@ type propsType = {
 const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
   const [dataImgLoadingIndex, setDataImgLoadingIndex] = useState<number[]>([]);
   const containerSliderRef = useRef<HTMLDivElement>(null);
+  const cardSliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerSliderRef.current !== null) {
-      const slidePage = Math.floor((stateSlider + 1) / 8);
-      containerSliderRef.current.style.transform = ` translateX(-${
-        slidePage * containerSliderRef.current.clientWidth + 30 * slidePage
+    const containerSliderCurrent = containerSliderRef.current;
+    const cardSliderCurrent = cardSliderRef.current;
+
+    if (containerSliderCurrent !== null && cardSliderCurrent !== null) {
+      const gap = +containerSliderCurrent.style.gap.split("px")[0];
+      const slidePage = Math.floor(
+        (stateSlider - 1 > 0 ? stateSlider - 1 : 0) /
+          Math.floor(
+            containerSliderCurrent.clientWidth /
+              (cardSliderCurrent.clientWidth + gap)
+          )
+      );
+
+      containerSliderCurrent.style.transform = `translateX(-${
+        slidePage * containerSliderCurrent.clientWidth
       }px)`;
     }
   }, [stateSlider]);
@@ -46,11 +41,31 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
     for (const key in data) {
       onLoadImg(
         () => setDataImgLoadingIndex((prev) => [...prev, +key]),
-        "https://image.tmdb.org/t/p/w500" + data[key].poster_path
+        data[key].Poster
       );
     }
   }, [data]);
+  useEffect(() => {
+    const containerSliderCurrent = containerSliderRef.current;
+    const cardSliderCurrent = cardSliderRef.current;
 
+    function calculateGap() {
+      if (containerSliderCurrent !== null && cardSliderCurrent !== null) {
+        const countCard = Math.floor(
+          containerSliderCurrent.clientWidth /
+            (cardSliderCurrent.clientWidth + 25)
+        );
+        const gap =
+          (containerSliderCurrent.clientWidth -
+            cardSliderCurrent.clientWidth * countCard) /
+            countCard +
+          1;
+        containerSliderCurrent.style.gap = `${gap}px`;
+      }
+    }
+    window.addEventListener("resize", calculateGap);
+    calculateGap();
+  }, [data]);
   const onClickCardSlider = (indexCard: number) => {
     if (stateSlider === indexCard) return;
     onChangeClickBtnSlider(indexCard - stateSlider);
@@ -68,7 +83,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       </div>
       <div className="container_window">
         <div ref={containerSliderRef} className="container_state_img_page">
-          {data.map((item: SlideItemType, index: number) => {
+          {data.map((item: OmdbResponse, index: number) => {
             if (containerSliderRef.current === null) return "";
             const width =
               containerSliderRef.current.clientWidth / 8 - 25 / 2 / 6;
@@ -76,9 +91,10 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
             return (
               <div
                 key={index}
+                ref={cardSliderRef}
                 onClick={() => onClickCardSlider(index)}
                 className="container_img"
-                style={{ minWidth: `${width}px`, minHeight: `${height}px` }}
+                style={{ minWidth: `${width}px`, height: `${height}px` }}
               >
                 {dataImgLoadingIndex.includes(index) ? (
                   <img
@@ -90,7 +106,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
                           ? `${height}px`
                           : `${height / 1.1}px`,
                     }}
-                    src={"https://image.tmdb.org/t/p/w500" + item.poster_path}
+                    src={item.Poster}
                     alt="state_img"
                   />
                 ) : (

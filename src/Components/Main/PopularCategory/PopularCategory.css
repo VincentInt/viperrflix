@@ -18,11 +18,11 @@
       aspect-ratio: 4/3;
       border: 1.5px solid rgba(255, 255, 255, 0.22);
       border-radius: 16px;
-
       .text_card {
         position: relative;
         z-index: 2;
         color: white;
+        text-transform: capitalize;
       }
       .vintage {
         z-index: 1;

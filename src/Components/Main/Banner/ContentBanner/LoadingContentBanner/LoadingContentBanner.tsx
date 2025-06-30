@@ -2,7 +2,7 @@ import "./LoadingContentBanner.css";
 
 const LoadingContentBanner = () => {
   return (
-    <div className="container_info_page">
+    <div className="container_info_page_load">
       <div className="info_page">
         <div className="loading load_title">
           <div className="glow"></div>
