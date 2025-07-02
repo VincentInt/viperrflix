@@ -1,8 +1,10 @@
-import { forwardRef, useEffect, useState, type RefObject } from "react";
-import type { OmdbResponse } from "../../../utils/type/OmdbType";
 import "./ShortCard.css";
-import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
+import favoriteImg from "../../../../public/img/icon/Vector (1).png";
+import listDesiredImg from "../../../../public/img/icon/Vector (2).png";
 import LoadIndicator from "../../LoadIndicator/LoadIndicator";
+import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
+import { forwardRef, useEffect, useState } from "react";
+import type { OmdbResponse } from "../../../utils/type/OmdbType";
 
 type Props = {
   item: OmdbResponse;
@@ -18,9 +20,11 @@ function colorRating(rating: string) {
 }
 const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
   const [loadImg, setLoadImg] = useState<boolean>(false);
+
   useEffect(() => {
     onLoadImg(() => setLoadImg(true), item.Poster);
   }, [item]);
+
   return (
     <div ref={ref} className="card">
       <div className="container_img">
@@ -47,12 +51,23 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
             );
           })}
         </div>
-        <h6>Age: {item.Rated}</h6>
-        <h6>
-          RunTime: {Math.floor((+item.Runtime.split(" ")[0] / 60) * 10) / 10}h
-        </h6>
-        <div className="container_flex_text">
-          <h6>{item.Released}</h6>
+        <div className="container_flex_text container_info_nav">
+          <div>
+            <h6>Age: {item.Rated}</h6>
+            <h6>
+              Time line:{" "}
+              {Math.floor((+item.Runtime.split(" ")[0] / 60) * 10) / 10}H
+            </h6>
+            <h6>Date: {item.Released}</h6>
+          </div>
+          <div className="container_btn">
+            <button>
+              <img src={favoriteImg} alt="favorite_img" />
+            </button>
+            <button>
+              <img src={listDesiredImg} alt="list_desired_img" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

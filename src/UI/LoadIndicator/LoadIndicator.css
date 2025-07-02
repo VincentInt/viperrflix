@@ -1,32 +1,16 @@
 .container_load_indicator {
-  .ball {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .loader {
     width: 30px;
     height: 30px;
-    background-color: rgba(255, 255, 255, 0.582);
-    border-radius: 100%;
-    .intersection_ball {
-      position: absolute;
-      width: 85%;
-      height: 85%;
-      left: 2.5px;
-      background-color: black;
-      border-radius: 100%;
-    }
-    .intersection_line {
-      width: 110%;
-      height: 60%;
-      backdrop-filter: blur(4px);
-      filter: blur(7px);
-      background-color: rgb(0, 0, 0);
-      animation: loading_anim 3s ease-out infinite;
-    }
+    border: 3px solid;
+    border-color: #ffffff transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 3s ease-in-out infinite;
   }
 }
-@keyframes loading_anim {
+@keyframes rotation {
   0% {
     transform: rotate(0deg);
   }
