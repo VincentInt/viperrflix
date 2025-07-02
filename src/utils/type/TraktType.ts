@@ -1,4 +1,4 @@
-export type TraktMovie = {
+export type TraktResponse = {
   title: string;
   year: number;
   ids: {

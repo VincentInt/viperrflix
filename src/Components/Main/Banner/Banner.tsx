@@ -4,48 +4,33 @@ import ContentLoadingSlider from "./Slider/ContentLoaderSlider";
 import ContentLoaderBanner from "./ContentBanner/ContentLoaderContentBanner";
 import { useEffect, useState } from "react";
 import type { OmdbResponse } from "../../../utils/type/OmdbType";
-import type { TraktMovie } from "../../../utils/type/TraktMovieType";
+import type { TraktResponse } from "../../../utils/type/TraktType";
+import { fetchOmdb } from "../../../utils/fetch/fetchOmdb";
+import { fetchTrakt } from "../../../utils/fetch/fetchTrakt";
 
 const animationStyleElem = "animation_appearance ease-in-out forwards";
 const animationReverseStyleElem =
   "animation_appearance_reverse  ease-in-out forwards";
 
 const Banner = () => {
-  const [dataPopularMovies, setDataPopularMovies] = useState<TraktMovie[]>([]);
+  const [dataPopularMovies, setDataPopularMovies] = useState<TraktResponse[]>([]);
   const [dataBanner, setDataBanner] = useState<OmdbResponse[]>([]);
   const [stateSlider, setStateSlider] = useState<number>(0);
   const [animationMove, setAnimationMove] = useState<false | number>(false);
   const [moveStatus, setMoveStatus] = useState<boolean>(true);
 
   useEffect(() => {
-    const URL_POPULAR_MOVIE = "https://api.trakt.tv/movies/popular";
-
-    fetch(URL_POPULAR_MOVIE, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "trakt-api-version": "2",
-        "trakt-api-key":
-          "51c0cd2200c2a8a981a90cba506d3be1a337517a9e646786aefae6b8704890d4",
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => setDataPopularMovies(json))
-      .catch((err) => new Error(err));
+    fetchTrakt("movies/popular", (json: TraktResponse[]) => setDataPopularMovies(json));
   }, []);
   useEffect(() => {
     if (dataPopularMovies.length !== 0) {
-      const URL_BANNER_MOVIES = "https://www.omdbapi.com/?apikey=4c10715f";
-
-      dataPopularMovies.forEach((item: TraktMovie) => {
-        fetch(URL_BANNER_MOVIES + `&i=${item.ids.imdb}`)
-          .then((res) => res.json())
-          .then((json) => setDataBanner((prev) => [...prev, json]))
-          .catch((err) => new Error(err));
+      dataPopularMovies.forEach((item: TraktResponse) => {
+        fetchOmdb(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
+          setDataBanner((prev) => [...prev, json])
+        );
       });
     }
   }, [dataPopularMovies]);
-
   useEffect(() => {
     if (typeof animationMove === "number") {
       setTimeout(() => {

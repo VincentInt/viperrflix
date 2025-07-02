@@ -1,6 +1,6 @@
 import LoadingContentBanner from "./LoadingContentBanner/LoadingContentBanner";
 import ContentBanner from "./Content/ContentBanner";
-import type { OmdbResponse } from "../Banner.tsx";
+import type { OmdbResponse } from "../../../../utils/type/OmdbType";
 
 type AnimationMoveType = false | number;
 type propsType = {
