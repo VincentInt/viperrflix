@@ -1,16 +1,14 @@
 import "./PopularCategory.css";
 import { useEffect, useState } from "react";
 import type { OmdbResponse } from "../../../utils/type/OmdbType";
-import type { TraktResponse } from "../../../utils/type/TraktType";
+import type {
+  TraktResponse,
+  TraktReadMoreResponse,
+} from "../../../utils/type/TraktType";
 import { fetchTrakt } from "../../../utils/fetch/fetchTrakt";
 import { fetchOmdb } from "../../../utils/fetch/fetchOmdb";
 import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
 import LoadIndicator from "../../../UI/LoadIndicator/LoadIndicator";
-
-type TraktTrendingResponse = {
-  movie: TraktResponse;
-  watchers: number;
-};
 
 const popularGenreArray = ["animation", "action", "comedy", "drama"];
 
@@ -22,9 +20,9 @@ const PopularCategory = () => {
   const [loadImgIndexs, setLoadImgIndexs] = useState<number[]>([]);
   useEffect(() => {
     popularGenreArray.forEach((item) => {
-      fetchTrakt(
+      fetchTrakt<TraktReadMoreResponse>(
         `movies/trending?genres=${item}`,
-        (json: TraktTrendingResponse[]) =>
+        (json: TraktReadMoreResponse[]) =>
           setDataPopularTraktMovie((prev) => [...prev, json[1].movie])
       );
     });
@@ -32,7 +30,7 @@ const PopularCategory = () => {
   useEffect(() => {
     if (dataPopularTraktMovie.length === 4) {
       dataPopularTraktMovie.forEach((item) => {
-        fetchOmdb(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
+        fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
           setDataPopularGenre((prev) => [...prev, json])
         );
       });

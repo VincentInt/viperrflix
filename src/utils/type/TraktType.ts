@@ -8,3 +8,7 @@ export type TraktResponse = {
     tmdb: number;
   };
 };
+export type TraktReadMoreResponse = {
+  movie: TraktResponse;
+  watchers: number;
+};

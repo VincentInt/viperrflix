@@ -1,7 +1,11 @@
 import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
 import { fetchTrakt } from "../../utils/fetch/fetchTrakt";
 import type { OmdbResponse } from "../../utils/type/OmdbType";
-import type { TraktResponse } from "../../utils/type/TraktType";
+import type {
+  TraktReadMoreResponse,
+  TraktResponse,
+} from "../../utils/type/TraktType";
+import LoadingShortCard from "../CardMovies/LoadingShortCard/LoadingShortCard";
 import "./CardList.css";
 import {
   useEffect,
@@ -11,10 +15,6 @@ import {
   type RefObject,
 } from "react";
 
-type TraktTrendingResponse = {
-  movie: TraktResponse;
-  watchers: number;
-};
 type Props = {
   title: string;
   paramsUrl: string;
@@ -25,23 +25,29 @@ type Props = {
   ) => ReactNode;
 };
 const CardList = ({ title, paramsUrl, renderCard }: Props) => {
-  const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktTrendingResponse[]>(
-    []
-  );
+  const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
   const [dataCardsOmdb, setDataCardsOmdb] = useState<OmdbResponse[]>([]);
 
   const containerCardsRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchTrakt(paramsUrl, (json: TraktTrendingResponse[]) =>
-      setDataCardsTrakt(json)
-    );
+    if (!paramsUrl.includes("popular")) {
+      fetchTrakt<TraktReadMoreResponse>(
+        paramsUrl,
+        (json: TraktReadMoreResponse[]) =>
+          setDataCardsTrakt(json.map((item) => item.movie))
+      );
+    } else {
+      fetchTrakt<TraktResponse>(paramsUrl, (json: TraktResponse[]) =>
+        setDataCardsTrakt(json)
+      );
+    }
   }, []);
   useEffect(() => {
     if (dataCardsTrakt.length !== 0) {
-      dataCardsTrakt.forEach((item: TraktTrendingResponse) => {
-        fetchOmdb(`&i=${item.movie.ids.imdb}`, (json: OmdbResponse) =>
+      dataCardsTrakt.forEach((item: TraktResponse) => {
+        fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
           setDataCardsOmdb((prev) => [...prev, json])
         );
       });
@@ -91,10 +97,15 @@ const CardList = ({ title, paramsUrl, renderCard }: Props) => {
       <div className="container_card_list">
         <h3 className="title_text">{title}</h3>
         <div ref={containerCardsRef} className="container_cards">
-          {dataCardsOmdb.map((item: OmdbResponse, index: number) => {
-            const ref = index === 0 ? cardRef : undefined;
-            return renderCard(item, index, ref);
-          })}
+          {dataCardsOmdb.length > 0
+            ? dataCardsOmdb.map((item: OmdbResponse, index: number) => {
+                const ref = index === 0 ? cardRef : undefined;
+                return renderCard(item, index, ref);
+              })
+            : [...Array(10)].map((_, index) => {
+                const ref = index === 0 ? cardRef : undefined;
+                return <LoadingShortCard key={index} ref={ref} />;
+              })}
         </div>
       </div>
     </section>

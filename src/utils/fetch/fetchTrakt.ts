@@ -1,5 +1,3 @@
-import type { Trakt } from "../type/TraktType";
-
 const URL_TRAKT = "https://api.trakt.tv/";
 const OPTIONS_TRAKT = {
   method: "GET",
@@ -11,7 +9,7 @@ const OPTIONS_TRAKT = {
   },
 };
 
-export const fetchTrakt = (params: string, set: (json: Trakt[]) => any) => {
+export const fetchTrakt = <T>(params: string, set: (json: T[]) => any) => {
   fetch(`${URL_TRAKT}${params}`, OPTIONS_TRAKT)
     .then((res) => res.json())
     .then((json) => {

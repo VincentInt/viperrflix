@@ -1,0 +1,93 @@
+.short_card_loading {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  background-color: rgba(24, 24, 27, 0.619);
+  backdrop-filter: blur(10px);
+  .text_loading,
+  .btn_loading {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 18px;
+    border-radius: 4px;
+    background-color: rgb(51, 51, 51);
+    .glow {
+      width: 60%;
+      height: 220%;
+      background-color: rgb(77, 77, 77);
+      box-shadow: 0px 0px 25px 40px rgb(77, 77, 77);
+      transform: translateX(-400%);
+      animation: animation_load_elem 5s ease-in infinite;
+    }
+  }
+  .genre {
+    width: 25%;
+    height: 13px;
+  }
+  .container_rating {
+    width: 15%;
+  }
+  .container_text {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 12px;
+    gap: 5px;
+    .container_flex_text {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+    .container_info_nav {
+      justify-content: space-between;
+      align-items: normal;
+      .container_text_info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .container_btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .btn_loading {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    .container_genre {
+      justify-content: space-between;
+      align-items: start;
+      flex-wrap: wrap;
+      padding: 2px 0px;
+      gap: 0px;
+      height: 2.4em;
+      .genre {
+        padding: 0px 5px;
+        background-color: rgb(41, 41, 41);
+      }
+    }
+  }
+  .container_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 250px;
+  }
+}
+@keyframes animation_load_elem {
+  0% {
+    transform: translateX(-400%);
+  }
+  100% {
+    transform: translateX(2400%);
+  }
+}

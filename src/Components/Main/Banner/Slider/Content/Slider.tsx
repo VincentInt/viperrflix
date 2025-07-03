@@ -38,12 +38,12 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
   }, [stateSlider]);
 
   useEffect(() => {
-    for (const key in data) {
+    data.forEach((item, index) => {
       onLoadImg(
-        () => setDataImgLoadingIndex((prev) => [...prev, +key]),
-        data[key].Poster
+        () => setDataImgLoadingIndex((prev) => [...prev, index]),
+        item.Poster
       );
-    }
+    });
   }, [data]);
   useEffect(() => {
     const containerSliderCurrent = containerSliderRef.current;
@@ -66,6 +66,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
     window.addEventListener("resize", calculateGap);
     calculateGap();
   }, [data]);
+
   const onClickCardSlider = (indexCard: number) => {
     if (stateSlider === indexCard) return;
     onChangeClickBtnSlider(indexCard - stateSlider);

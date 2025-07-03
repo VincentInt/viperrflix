@@ -26,10 +26,11 @@ function randomPosition(): CoordXYType {
     y:
       Math.random() *
       (Math.random() >= 0.5
-        ? window.innerHeight + window.innerHeight * 1.5
-        : window.innerHeight - window.innerHeight * 1.5),
+        ? document.body.clientHeight + document.body.clientHeight * 1.5
+        : document.body.clientHeight - document.body.clientHeight * 1.5),
   };
 }
+
 function randomSizePoint(): SizeType {
   const size = Math.random() * 2.8 + 0.8;
   return {
@@ -56,7 +57,7 @@ const RandomLights = () => {
 
   useEffect(() => {
     const arrayPointsData: PointDataType[] = [];
-    const countPoint = Math.random() * 150 + 200;
+    const countPoint = Math.random() * 150 + 500;
 
     for (let i = 0; i < countPoint; i++) {
       const randomPoint = randomPointLightFunc();
