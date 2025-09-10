@@ -23,24 +23,27 @@ const PopularCategory = () => {
       fetchTrakt<TraktReadMoreResponse>(
         `movies/trending?genres=${item}`,
         (json: TraktReadMoreResponse[]) =>
-          setDataPopularTraktMovie((prev) => [...prev, json[1].movie])
+          setDataPopularTraktMovie((prev: TraktResponse[]) => [
+            ...prev,
+            json[1].movie,
+          ])
       );
     });
   }, []);
   useEffect(() => {
     if (dataPopularTraktMovie.length === 4) {
-      dataPopularTraktMovie.forEach((item) => {
+      dataPopularTraktMovie.forEach((item: TraktResponse) => {
         fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
-          setDataPopularGenre((prev) => [...prev, json])
+          setDataPopularGenre((prev: OmdbResponse[]) => [...prev, json])
         );
       });
     }
   }, [dataPopularTraktMovie]);
   useEffect(() => {
     if (dataPopularGenre.length === 4) {
-      dataPopularGenre.forEach((item, index) => {
+      dataPopularGenre.forEach((item: OmdbResponse, index: number) => {
         onLoadImg(
-          () => setLoadImgIndexs((prev) => [...prev, index]),
+          () => setLoadImgIndexs((prev: number[]) => [...prev, index]),
           item.Poster
         );
       });
