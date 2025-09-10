@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import LoadIndicator from "../../LoadIndicator/LoadIndicator";
 import "./LoadingShortCard.css";
 
-const LoadingShortCard = forwardRef<HTMLDivElement>((key, ref) => {
+const LoadingShortCard = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <div ref={ref} className="short_card_loading">
       <div className="container_img">
