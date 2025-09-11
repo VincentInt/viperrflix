@@ -30,7 +30,7 @@ type Props = {
     index: number,
     ref?: RefObject<HTMLDivElement | null>
   ) => ReactNode;
-  setStatePage: Dispatch<SetStateAction<StatePage>> | undefined;
+  setStatePage?: Dispatch<SetStateAction<StatePage>>;
 };
 const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
