@@ -1,3 +1,4 @@
+import { Link, useLocation} from "react-router-dom";
 import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
 import { fetchTrakt } from "../../utils/fetch/fetchTrakt";
 import type { OmdbResponse } from "../../utils/type/OmdbType";
@@ -11,10 +12,16 @@ import {
   useEffect,
   useRef,
   useState,
+  type Dispatch,
   type ReactNode,
   type RefObject,
+  type SetStateAction,
 } from "react";
 
+type StatePage = {
+  statusLoad: boolean;
+  page: number;
+};
 type Props = {
   title: string;
   paramsUrl: string;
@@ -23,10 +30,13 @@ type Props = {
     index: number,
     ref?: RefObject<HTMLDivElement | null>
   ) => ReactNode;
+  setStatePage: Dispatch<SetStateAction<StatePage>> | undefined;
 };
-const CardList = ({ title, paramsUrl, renderCard }: Props) => {
+const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
   const [dataCardsOmdb, setDataCardsOmdb] = useState<OmdbResponse[]>([]);
+
+  const location = useLocation();
 
   const containerCardsRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -43,20 +53,27 @@ const CardList = ({ title, paramsUrl, renderCard }: Props) => {
         setDataCardsTrakt(json)
       );
     }
-  }, []);
+  }, [paramsUrl]);
   useEffect(() => {
     if (dataCardsTrakt.length !== 0) {
       dataCardsTrakt.forEach((item: TraktResponse) => {
-        fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
-          setDataCardsOmdb((prev) => [...prev, json])
-        );
+        fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) => {
+          if (
+            location.pathname.includes("collection") &&
+            setStatePage !== undefined
+          ) {
+            setStatePage((prev: StatePage) => ({
+              ...prev,
+              statusLoad: false,
+            }));
+          }
+          setDataCardsOmdb((prev) => [...prev, json]);
+        });
       });
     }
   }, [dataCardsTrakt]);
 
   useEffect(() => {
-    // if (children.type.name !== "ShortCard") return;
-
     let countCard: number = 5;
     let timer: number;
 
@@ -91,11 +108,19 @@ const CardList = ({ title, paramsUrl, renderCard }: Props) => {
     });
     calculateGap();
   }, [dataCardsOmdb, containerCardsRef, cardRef]);
-
   return (
     <section className="section_card_list">
       <div className="container_card_list">
-        <h3 className="title_text">{title}</h3>
+        <div className="container_title">
+          <h3 className="title_text">{title}</h3>
+          {!location.pathname.includes("collection") ? (
+            <Link to={`collection/${paramsUrl}`} className="btn_show_more">
+              <h5> Показать больше</h5>
+            </Link>
+          ) : (
+            ""
+          )}
+        </div>
         <div ref={containerCardsRef} className="container_cards">
           {dataCardsOmdb.length > 0
             ? dataCardsOmdb.map((item: OmdbResponse, index: number) => {

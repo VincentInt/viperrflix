@@ -43,7 +43,7 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
           </div>
         </div>
         <div className="container_flex_text container_genre">
-          {item?.Genre.split(",").map((item, index) => {
+          {item?.Genre?.split(",").map((item, index) => {
             return (
               <h6 key={index} className="genre">
                 {item}
@@ -56,7 +56,7 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
             <h6>Age: {item.Rated}</h6>
             <h6>
               Time line:{" "}
-              {Math.floor((+item.Runtime.split(" ")[0] / 60) * 10) / 10}H
+              {Math.floor((+item?.Runtime?.split(" ")[0] / 60) * 10) / 10}H
             </h6>
             <h6>Date: {item.Released}</h6>
           </div>
