@@ -9,6 +9,7 @@ export type TraktResponse = {
   };
 };
 export type TraktReadMoreResponse = {
-  movie: TraktResponse;
+  movie?: TraktResponse;
+  show?: TraktResponse;
   watchers: number;
 };

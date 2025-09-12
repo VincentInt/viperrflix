@@ -1,4 +1,4 @@
-import { Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
 import { fetchTrakt } from "../../utils/fetch/fetchTrakt";
 import type { OmdbResponse } from "../../utils/type/OmdbType";
@@ -35,6 +35,7 @@ type Props = {
 const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
   const [dataCardsOmdb, setDataCardsOmdb] = useState<OmdbResponse[]>([]);
+  const [paramsTypeCard, setParamsTypeCard] = useState<string>("");
 
   const location = useLocation();
 
@@ -42,18 +43,39 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const paramsType = paramsUrl.split("/")[0];
+    if (paramsType !== paramsTypeCard) {
+      setDataCardsTrakt([]);
+      setDataCardsOmdb([]);
+    }
+    setParamsTypeCard(paramsType);
+  }, [paramsUrl]);
+
+  useEffect(() => {
     if (!paramsUrl.includes("popular")) {
       fetchTrakt<TraktReadMoreResponse>(
         paramsUrl,
         (json: TraktReadMoreResponse[]) =>
-          setDataCardsTrakt(json.map((item) => item.movie))
+          setDataCardsTrakt(() => {
+            if (json.length === 0) return [];
+
+            const firstItem = json[0];
+
+            if ("movie" in firstItem) {
+              return json.map((item) => item.movie) as TraktResponse[];
+            } else if ("show" in firstItem) {
+              return json.map((item) => item.show) as TraktResponse[];
+            }
+            return [];
+          })
       );
     } else {
       fetchTrakt<TraktResponse>(paramsUrl, (json: TraktResponse[]) =>
         setDataCardsTrakt(json)
       );
     }
-  }, [paramsUrl]);
+  }, [paramsTypeCard]);
+
   useEffect(() => {
     if (dataCardsTrakt.length !== 0) {
       dataCardsTrakt.forEach((item: TraktResponse) => {

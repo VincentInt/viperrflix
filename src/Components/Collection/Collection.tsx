@@ -37,6 +37,9 @@ const Collection = () => {
     window.addEventListener("scroll", cheackScroll);
     cheackScroll();
   }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [params]);
   return (
     <section className="section_collection">
       <CardList

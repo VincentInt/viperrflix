@@ -47,22 +47,15 @@ const Header = () => {
   return (
     <header ref={headerRef}>
       <div className="content_header">
-        <h2>ViperFlix</h2>
+        <Link to={"/"}>
+          <h2>ViperFlix</h2>
+        </Link>
         <nav className="container_header_nav">
-          <Link to={""}>
-            <h5>Главная</h5>
+          <Link to={"/collection/movies/trending"}>
+            <h5>Фильмы</h5>
           </Link>
-          <Link to={""}>
-            <h5>Главная</h5>
-          </Link>
-          <Link to={""}>
-            <h5>Главная</h5>
-          </Link>
-          <Link to={""}>
-            <h5>Главная</h5>
-          </Link>
-          <Link to={""}>
-            <h5>Главная</h5>
+          <Link to={"/collection/shows/trending"}>
+            <h5>Сериалы</h5>
           </Link>
           <div className="container_input_search">
             <input type="text" placeholder="Поиск" />

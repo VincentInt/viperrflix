@@ -2,7 +2,10 @@
   margin: 0;
   padding: 0;
 }
-#root{
+html {
+  scroll-behavior: smooth;
+}
+#root {
   position: relative;
   width: 100%;
   height: 100%;
