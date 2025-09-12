@@ -23,10 +23,16 @@ const PopularCategory = () => {
       fetchTrakt<TraktReadMoreResponse>(
         `movies/trending?genres=${item}`,
         (json: TraktReadMoreResponse[]) =>
-          setDataPopularTraktMovie((prev: TraktResponse[]) => [
-            ...prev,
-            json[1].movie,
-          ])
+          setDataPopularTraktMovie((prev: TraktResponse[]) => {
+            if (!json || json.length === 0) return prev;
+            const movieItem = json.find(
+              (item: TraktReadMoreResponse) => item.movie
+            );
+            if (movieItem && movieItem.movie) {
+              return [...prev, movieItem.movie];
+            }
+            return prev;
+          })
       );
     });
   }, []);
