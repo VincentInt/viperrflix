@@ -11,7 +11,7 @@ const Main = () => {
       <Banner />
       <PopularCategory />
       <CardList
-        title={"В тренде"}
+        title={"trending"}
         paramsUrl={"movies/trending"}
         renderCard={(
           item: OmdbResponse,
@@ -20,7 +20,16 @@ const Main = () => {
         ) => <ShortCard key={index} item={item} ref={ref} />}
       />
       <CardList
-        title={"Ожидаемые новинки"}
+        title={"popular"}
+        paramsUrl={"movies/popular"}
+        renderCard={(
+          item: OmdbResponse,
+          index: number,
+          ref?: RefObject<HTMLDivElement | null>
+        ) => <ShortCard key={index} item={item} ref={ref} />}
+      />
+      <CardList
+        title={"anticipated"}
         paramsUrl={"movies/anticipated"}
         renderCard={(
           item: OmdbResponse,
@@ -29,17 +38,8 @@ const Main = () => {
         ) => <ShortCard key={index} item={item} ref={ref} />}
       />
       <CardList
-        title={"Популярные прокаты в США"}
+        title={"boxoffice"}
         paramsUrl={"movies/boxoffice"}
-        renderCard={(
-          item: OmdbResponse,
-          index: number,
-          ref?: RefObject<HTMLDivElement | null>
-        ) => <ShortCard key={index} item={item} ref={ref} />}
-      />
-      <CardList
-        title={"Легендарные Фильмы"}
-        paramsUrl={"movies/popular"}
         renderCard={(
           item: OmdbResponse,
           index: number,

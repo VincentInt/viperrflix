@@ -43,36 +43,37 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const paramsType = paramsUrl.split("/")[0];
-    if (paramsType !== paramsTypeCard) {
+    if (paramsUrl.split("/")[0] !== paramsTypeCard.split("/")[0]) {
       setDataCardsTrakt([]);
       setDataCardsOmdb([]);
     }
-    setParamsTypeCard(paramsType);
+    setParamsTypeCard(paramsUrl);
   }, [paramsUrl]);
 
   useEffect(() => {
-    if (!paramsUrl.includes("popular")) {
-      fetchTrakt<TraktReadMoreResponse>(
-        paramsUrl,
-        (json: TraktReadMoreResponse[]) =>
-          setDataCardsTrakt(() => {
-            if (json.length === 0) return [];
+    if (paramsTypeCard.length !== 0) {
+      if (!paramsTypeCard.includes("popular")) {
+        fetchTrakt<TraktReadMoreResponse>(
+          paramsTypeCard,
+          (json: TraktReadMoreResponse[]) =>
+            setDataCardsTrakt(() => {
+              if (json.length === 0) return [];
 
-            const firstItem = json[0];
+              const firstItem = json[0];
 
-            if ("movie" in firstItem) {
-              return json.map((item) => item.movie) as TraktResponse[];
-            } else if ("show" in firstItem) {
-              return json.map((item) => item.show) as TraktResponse[];
-            }
-            return [];
-          })
-      );
-    } else {
-      fetchTrakt<TraktResponse>(paramsUrl, (json: TraktResponse[]) =>
-        setDataCardsTrakt(json)
-      );
+              if ("movie" in firstItem) {
+                return json.map((item) => item.movie) as TraktResponse[];
+              } else if ("show" in firstItem) {
+                return json.map((item) => item.show) as TraktResponse[];
+              }
+              return [];
+            })
+        );
+      } else {
+        fetchTrakt<TraktResponse>(paramsTypeCard, (json: TraktResponse[]) =>
+          setDataCardsTrakt(json)
+        );
+      }
     }
   }, [paramsTypeCard]);
 

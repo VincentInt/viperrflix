@@ -43,8 +43,8 @@ const Collection = () => {
   return (
     <section className="section_collection">
       <CardList
-        title={"В тренде"}
-        paramsUrl={`${params.type}/${params.sort}?limit=50&page=${statePage.page}`}
+        title={`${params.sort}`}
+        paramsUrl={`${params.type}/${params.sort}?limit=10&page=${statePage.page}`}
         renderCard={(
           item: OmdbResponse,
           index: number,

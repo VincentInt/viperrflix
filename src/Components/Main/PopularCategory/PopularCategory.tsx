@@ -18,6 +18,7 @@ const PopularCategory = () => {
   >([]);
   const [dataPopularGenre, setDataPopularGenre] = useState<OmdbResponse[]>([]);
   const [loadImgIndexs, setLoadImgIndexs] = useState<number[]>([]);
+  
   useEffect(() => {
     popularGenreArray.forEach((item) => {
       fetchTrakt<TraktReadMoreResponse>(

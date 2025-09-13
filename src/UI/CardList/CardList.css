@@ -6,6 +6,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .title_text {
+        text-transform: capitalize;
+      }
       .btn_show_more {
         padding: 5px 20px;
         border: 1.5px solid rgba(255, 255, 255, 0.111);
