@@ -5,19 +5,12 @@ import LoadIndicator from "../../LoadIndicator/LoadIndicator";
 import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
 import { forwardRef, useEffect, useState } from "react";
 import type { OmdbResponse } from "../../../utils/type/OmdbType";
+import RatingIndicator from "../../RatingIndicator/RatingIndicator";
 
 type Props = {
   item: OmdbResponse;
 };
-function colorRating(rating: string) {
-  if (+rating > 5) {
-    let firstColor = 225 - (+rating - 5) * 45;
-    return `${firstColor}, ${225}`;
-  } else {
-    let lastColor = 225 + (+rating - 5) * 45;
-    return `${225}, ${lastColor}`;
-  }
-}
+
 const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
   const [loadImg, setLoadImg] = useState<boolean>(false);
 
@@ -33,14 +26,7 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
       <div className="container_text">
         <div className="container_flex_text name_rating">
           <h5 className="text_name">{item.Title}</h5>
-          <div
-            style={{
-              backgroundColor: `rgb(${colorRating(item.imdbRating)}, 0, 0.6)`,
-            }}
-            className="container_rating"
-          >
-            <h6 className="text_rating">{item.imdbRating}</h6>
-          </div>
+          <RatingIndicator item={item} />
         </div>
         <div className="container_flex_text container_genre">
           {item?.Genre?.split(",").map((item, index) => {

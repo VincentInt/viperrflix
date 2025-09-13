@@ -13,10 +13,10 @@ export type OmdbResponse = {
   Country: string;
   Awards: string;
   Poster: string;
-  Ratings: {
+  Ratings: Array<{
     Source: string;
     Value: string;
-  };
+  }>;
   Metascore: string;
   imdbRating: string;
   imdbVotes: string;

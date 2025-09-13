@@ -1,0 +1,11 @@
+  .container_rating {
+    width: fit-content;
+    padding: 1px 4px;
+    border: 1px solid rgba(255, 255, 255, 0.592);
+    border-radius: 5px;
+    backdrop-filter: blur(20px);
+    .text_rating {
+      font-size: 12px;
+      text-wrap: nowrap;
+    }
+  }

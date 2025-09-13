@@ -49,6 +49,7 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
     }
     setParamsTypeCard(paramsUrl);
   }, [paramsUrl]);
+  console.log(paramsTypeCard);
 
   useEffect(() => {
     if (paramsTypeCard.length !== 0) {
@@ -148,7 +149,14 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
           {dataCardsOmdb.length > 0
             ? dataCardsOmdb.map((item: OmdbResponse, index: number) => {
                 const ref = index === 0 ? cardRef : undefined;
-                return renderCard(item, index, ref);
+                return (
+                  <Link
+                    key={index}
+                    to={`/info/${paramsTypeCard.split("/")[0]}/${item.imdbID}`}
+                  >
+                    {renderCard(item, index, ref)}
+                  </Link>
+                );
               })
             : [...Array(10)].map((_, index) => {
                 const ref = index === 0 ? cardRef : undefined;
