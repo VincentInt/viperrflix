@@ -9,6 +9,7 @@ import { fetchTrakt } from "../../../utils/fetch/fetchTrakt";
 import { fetchOmdb } from "../../../utils/fetch/fetchOmdb";
 import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
 import LoadIndicator from "../../../UI/LoadIndicator/LoadIndicator";
+import { Link } from "react-router-dom";
 
 const popularGenreArray = ["animation", "action", "comedy", "drama"];
 
@@ -18,7 +19,7 @@ const PopularCategory = () => {
   >([]);
   const [dataPopularGenre, setDataPopularGenre] = useState<OmdbResponse[]>([]);
   const [loadImgIndexs, setLoadImgIndexs] = useState<number[]>([]);
-  
+
   useEffect(() => {
     popularGenreArray.forEach((item) => {
       fetchTrakt<TraktReadMoreResponse>(
@@ -61,7 +62,11 @@ const PopularCategory = () => {
       <div className="container_card_popular_category">
         {dataPopularGenre.map((item, index: number) => {
           return (
-            <div key={index} className="card_popular_category">
+            <Link
+              to={`collection/movies/popular?genres=${popularGenreArray[index]}&limit=20`}
+              key={index}
+              className="card_popular_category"
+            >
               <div className="vintage"></div>
               {loadImgIndexs.includes(index) ? (
                 <img src={item.Poster} alt="popular_category_img" />
@@ -70,7 +75,7 @@ const PopularCategory = () => {
               )}
 
               <h4 className="text_card">{popularGenreArray[index]}</h4>
-            </div>
+            </Link>
           );
         })}
       </div>

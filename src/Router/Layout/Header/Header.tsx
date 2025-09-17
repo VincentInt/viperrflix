@@ -1,11 +1,13 @@
 import "./Header.css";
 import imgSearchIcon from "../../../../public/img/icon/Vector.png";
 
-import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 
 const Header = () => {
+  const [inputSearch, setInputSearch] = useState("");
   const headerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function onScrollHeader() {
@@ -44,6 +46,17 @@ const Header = () => {
     }
     window.addEventListener("scroll", onScrollHeader);
   }, []);
+
+  function onChangeInput(event: ChangeEvent<HTMLInputElement>) {
+    setInputSearch(event.target.value);
+  }
+  function onSendInput(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === "Enter") {
+      navigate(`search/${inputSearch}`);
+      setInputSearch("");
+      (e.target as HTMLInputElement).blur();
+    }
+  }
   return (
     <header ref={headerRef}>
       <div className="content_header">
@@ -58,8 +71,16 @@ const Header = () => {
             <h5>Сериалы</h5>
           </Link>
           <div className="container_input_search">
-            <input type="text" placeholder="Поиск" />
-            <img src={imgSearchIcon} alt="img_search_input" />
+            <input
+              value={inputSearch}
+              onChange={onChangeInput}
+              onKeyUp={onSendInput}
+              type="text"
+              placeholder="Поиск"
+            />
+            <Link to={`search/${inputSearch}`} className="btn_search">
+              <img src={imgSearchIcon} alt="img_search_input" />
+            </Link>
           </div>
         </nav>
       </div>

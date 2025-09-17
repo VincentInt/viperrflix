@@ -70,7 +70,8 @@
       display: flex;
       gap: 35px;
       margin-top: 40px;
-      button {
+      button,
+      a {
         display: flex;
         align-items: center;
         padding: 10px 35px;

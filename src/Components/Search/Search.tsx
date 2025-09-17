@@ -1,26 +1,23 @@
-import "./Collection.css";
+import "./Search.css";
 import { useParams } from "react-router-dom";
 import CardList from "../../UI/CardList/CardList";
 import type { OmdbResponse } from "../../utils/type/OmdbType";
 import { useEffect, useState, type RefObject } from "react";
 import ShortCard from "../../UI/CardMovies/ShortCard/ShortCard";
 
-type Params = {
-  type: string;
-  sort: string;
+type ParamsType = {
+  query: string;
 };
 type StatePage = {
   statusLoad: boolean;
   page: number;
 };
-
-const Collection = () => {
+const Search = () => {
   const [statePage, setStatePage] = useState<StatePage>({
     statusLoad: false,
     page: 1,
   });
-
-  const params = useParams<Params>();
+  const params = useParams<ParamsType>();
 
   useEffect(() => {
     function cheackScroll() {
@@ -40,20 +37,22 @@ const Collection = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [params]);
+
   return (
-    <section className="section_collection">
+    <section className="section_search">
       <CardList
-        title={`${params.sort}`}
-        paramsUrl={`${params.type}/${params.sort}?limit=20&page=${statePage.page}`}
+        title={`${params.query}`}
+        paramsUrl={`search/movie?query=${params.query}&limit=20&page=${statePage.page}`}
         renderCard={(
           item: OmdbResponse,
           index: number,
           ref?: RefObject<HTMLDivElement | null>
         ) => <ShortCard key={index} item={item} ref={ref} />}
         setStatePage={setStatePage}
+        statusMore={false}
       />
     </section>
   );
 };
 
-export default Collection;
+export default Search;

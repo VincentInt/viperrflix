@@ -25,6 +25,7 @@ type StatePage = {
 type Props = {
   title: string;
   paramsUrl: string;
+  statusMore?: boolean;
   renderCard: (
     item: OmdbResponse,
     index: number,
@@ -32,7 +33,13 @@ type Props = {
   ) => ReactNode;
   setStatePage?: Dispatch<SetStateAction<StatePage>>;
 };
-const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
+const CardList = ({
+  title,
+  paramsUrl,
+  statusMore = true,
+  renderCard,
+  setStatePage,
+}: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
   const [dataCardsOmdb, setDataCardsOmdb] = useState<OmdbResponse[]>([]);
   const [paramsTypeCard, setParamsTypeCard] = useState<string>("");
@@ -49,7 +56,6 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
     }
     setParamsTypeCard(paramsUrl);
   }, [paramsUrl]);
-  console.log(paramsTypeCard);
 
   useEffect(() => {
     if (paramsTypeCard.length !== 0) {
@@ -61,13 +67,16 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
               if (json.length === 0) return [];
 
               const firstItem = json[0];
-
-              if ("movie" in firstItem) {
-                return json.map((item) => item.movie) as TraktResponse[];
-              } else if ("show" in firstItem) {
-                return json.map((item) => item.show) as TraktResponse[];
+              if (firstItem !== undefined) {
+                if ("movie" in firstItem) {
+                  return json.map((item) => item.movie) as TraktResponse[];
+                } else if ("show" in firstItem) {
+                  return json.map((item) => item.show) as TraktResponse[];
+                }
+                return [];
+              } else {
+                return [];
               }
-              return [];
             })
         );
       } else {
@@ -91,6 +100,7 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
               statusLoad: false,
             }));
           }
+
           setDataCardsOmdb((prev) => [...prev, json]);
         });
       });
@@ -137,7 +147,7 @@ const CardList = ({ title, paramsUrl, renderCard, setStatePage }: Props) => {
       <div className="container_card_list">
         <div className="container_title">
           <h3 className="title_text">{title}</h3>
-          {!location.pathname.includes("collection") ? (
+          {statusMore ? (
             <Link to={`collection/${paramsUrl}`} className="btn_show_more">
               <h5> Показать больше</h5>
             </Link>

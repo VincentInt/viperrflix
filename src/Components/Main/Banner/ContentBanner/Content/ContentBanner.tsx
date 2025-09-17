@@ -4,6 +4,7 @@ import streamServiceImg from "../../../../../../public/img/image 2.png";
 import favoriteImg from "../../../../../../public/img/icon/Vector (1).png";
 import listImg from "../../../../../../public/img/icon/Vector (2).png";
 import type { OmdbResponse } from "../../../../../utils/type/OmdbType";
+import { Link } from "react-router-dom";
 
 type AnimationMoveType = false | number;
 type propsType = {
@@ -117,7 +118,7 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
               }
         }
       >
-        <button>Подробнее</button>
+        <Link to={`info/movies/${data?.imdbID}`}>Подробнее</Link>
         <button>
           Транслируеться на
           <img

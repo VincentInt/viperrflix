@@ -3,6 +3,7 @@ import Layout from "./Layout/Layout";
 import MainPage from "../Page/MainPage";
 import MoviesCollectionPage from "../Page/MoviesCollectionPage";
 import MoviesInfoPage from "../Page/MoviesInfoPage";
+import SearchPage from "../Page/SearchPage";
 
 const Routers = () => {
   return (
@@ -11,9 +12,10 @@ const Routers = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />} />
           <Route
-            path="collection/:type/:sort"
+            path="collection/:type/:sort?"
             element={<MoviesCollectionPage />}
           />
+          <Route path="search/:query" element={<SearchPage />} />
           <Route path="info/:type/:id" element={<MoviesInfoPage />} />
         </Route>
       </Routes>
