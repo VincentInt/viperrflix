@@ -1,6 +1,7 @@
 import "./Footer.css";
-import telegramImg from "../../../../public/img/icon/icons8-телеграм-48.png"
+import telegramImg from "../../../../public/img/icon/icons8-телеграм-48.png";
 import githubImg from "../../../../public/img/icon/github.png";
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer>
@@ -14,21 +15,12 @@ const Footer = () => {
         </div>
         <div className="container_column">
           <div className="container_flex links">
-            <a href="#">
-              <h5>Главная</h5>
-            </a>
-            <a href="#">
-              <h5>Главная</h5>
-            </a>
-            <a href="#">
-              <h5>Главная</h5>
-            </a>
-            <a href="#">
-              <h5>Главная</h5>
-            </a>
-            <a href="#">
-              <h5>Главная</h5>
-            </a>
+            <Link to={"collection/movies/trending"}>
+              <h5>Фильмы</h5>
+            </Link>
+            <Link to={"collection/shows/trending"}>
+              <h5>Сериалы</h5>
+            </Link>
           </div>
           <div className="container_flex links">
             <a href="#">

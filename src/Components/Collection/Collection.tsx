@@ -51,6 +51,7 @@ const Collection = () => {
           ref?: RefObject<HTMLDivElement | null>
         ) => <ShortCard key={index} item={item} ref={ref} />}
         setStatePage={setStatePage}
+        statusMore={false}
       />
     </section>
   );
