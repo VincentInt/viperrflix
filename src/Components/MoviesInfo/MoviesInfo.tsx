@@ -1,12 +1,18 @@
 import { useParams } from "react-router-dom";
+import errorCardImg from "../../../public/img/izobr.-otsutst-scaled.jpg";
 import RatingIndicator from "../../UI/RatingIndicator/RatingIndicator";
 import type { OmdbResponse } from "../../utils/type/OmdbType";
 import "./MoviesInfo.css";
 import { useEffect, useState } from "react";
 import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
+import { onLoadImg } from "../../utils/onLoadImg/onLoadImg";
+import LoadIndicator from "../../UI/LoadIndicator/LoadIndicator";
+
+type StatusImg = "load" | "done" | "error";
 
 const MoviesInfo = () => {
   const [dataMovies, setDataMovies] = useState<OmdbResponse>();
+  const [loadImg, setLoadImg] = useState<StatusImg>("load");
   const params = useParams<{ id: string; type: string }>();
 
   useEffect(() => {
@@ -16,15 +22,39 @@ const MoviesInfo = () => {
       });
     }
   }, [params]);
+
+  useEffect(() => {
+    if (dataMovies !== undefined) {
+      onLoadImg(
+        (status) => setLoadImg(() => (status ? "done" : "error")),
+        dataMovies.Poster
+      );
+    }
+  }, [dataMovies]);
+
   return (
     <section className="section_movies_info">
       {dataMovies ? (
         <div className="main_container_info">
-          <img
-            className="img_poster"
-            src={dataMovies.Poster}
-            alt="poster_img"
-          />
+          {loadImg === "load" ? <LoadIndicator /> : ""}
+          {loadImg === "done" ? (
+            <img
+              className="img_poster"
+              src={dataMovies.Poster}
+              alt="card_img"
+            />
+          ) : (
+            ""
+          )}
+          {loadImg === "error" ? (
+            <img
+              className="img_poster"
+              src={errorCardImg}
+              alt="error_card_img"
+            />
+          ) : (
+            ""
+          )}
           <div className="container_info">
             <h1 className="title">{`${dataMovies.Title} (${dataMovies.Year})`}</h1>
             <div className="container_flex_info">

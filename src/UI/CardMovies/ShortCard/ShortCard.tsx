@@ -1,6 +1,7 @@
 import "./ShortCard.css";
 import favoriteImg from "../../../../public/img/icon/Vector (1).png";
 import listDesiredImg from "../../../../public/img/icon/Vector (2).png";
+import errorCardImg from "../../../../public/img/izobr.-otsutst-scaled.jpg";
 import LoadIndicator from "../../LoadIndicator/LoadIndicator";
 import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
 import { forwardRef, useEffect, useState } from "react";
@@ -10,18 +11,28 @@ import RatingIndicator from "../../RatingIndicator/RatingIndicator";
 type Props = {
   item: OmdbResponse;
 };
+type StatusImg = "load" | "done" | "error";
 
 const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
-  const [loadImg, setLoadImg] = useState<boolean>(false);
+  const [loadImg, setLoadImg] = useState<StatusImg>("load");
 
   useEffect(() => {
-    onLoadImg(() => setLoadImg(true), item.Poster);
+    onLoadImg(
+      (status) => setLoadImg(() => (status ? "done" : "error")),
+      item.Poster
+    );
   }, [item]);
 
   return (
     <div ref={ref} className="card">
       <div className="container_img">
-        {loadImg ? <img src={item.Poster} alt="card_img" /> : <LoadIndicator />}
+        {loadImg === "load" ? <LoadIndicator /> : ""}
+        {loadImg === "done" ? <img src={item.Poster} alt="card_img" /> : ""}
+        {loadImg === "error" ? (
+          <img src={errorCardImg} alt="error_card_img" />
+        ) : (
+          ""
+        )}
       </div>
       <div className="container_text">
         <div className="container_flex_text name_rating">
