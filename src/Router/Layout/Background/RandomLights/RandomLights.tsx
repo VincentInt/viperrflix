@@ -57,7 +57,8 @@ const RandomLights = () => {
 
   useEffect(() => {
     const arrayPointsData: PointDataType[] = [];
-    const countPoint = Math.random() * 150 + 500;
+    const countPoint = Math.random() * 100 + 300;
+console.log(countPoint);
 
     for (let i = 0; i < countPoint; i++) {
       const randomPoint = randomPointLightFunc();

@@ -7,7 +7,7 @@ const Footer = () => {
     <footer>
       <div className="container_footer">
         <div className="container_column">
-          <h3>ViperrFlix</h3>
+          <h2>ViperrFlix</h2>
           <div className="container_flex">
             <h6>omdbapi</h6>
             <h6>api.trakt</h6>
