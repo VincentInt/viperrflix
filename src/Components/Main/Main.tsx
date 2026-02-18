@@ -1,9 +1,9 @@
-import Banner from "./Banner/Banner";
-import CardList from "../../UI/CardList/CardList";
-import PopularCategory from "./PopularCategory/PopularCategory";
-import ShortCard from "../../UI/CardMovies/ShortCard/ShortCard";
-import type { RefObject } from "react";
-import type { OmdbResponse } from "../../utils/type/OmdbType";
+// import Banner from "./Banner/Banner";
+// import CardList from "../../UI/CardList/CardList";
+// import PopularCategory from "./PopularCategory/PopularCategory";
+// import ShortCard from "../../UI/CardMovies/ShortCard/ShortCard";
+// import type { RefObject } from "react";
+// import type { OmdbResponse } from "../../utils/type/OmdbType";
 
 const Main = () => {
   return (

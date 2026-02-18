@@ -97,18 +97,17 @@ header {
     display: none;
   }
   .open {
-    animation: burger_open 1s ease forwards;
-    animation-delay: 0.5s;
+    animation: burger_open 0.5s ease forwards;
   }
   .close {
     animation: burger_close 1s ease forwards;
   }
   .open_content {
-    transition: border-radius 0.5s ease;
+    transition: border-radius 0.2s ease;
     border-radius: 12px 12px 0px 12px;
   }
   .close_content {
-    transition: border-radius 0.5s ease;
+    transition: border-radius 0.2s ease;
     transition-delay: 0.5s;
     border-radius: 12px 12px 12px 12px;
   }
