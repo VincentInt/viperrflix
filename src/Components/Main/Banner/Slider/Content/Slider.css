@@ -1,6 +1,6 @@
 .container_banner_nav {
   z-index: 2;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
   .container_btn {
     display: flex;
     align-items: center;
@@ -38,5 +38,10 @@
         filter: brightness(60%);
       }
     }
+  }
+}
+@media (max-width: 580px) {
+  .container_banner_nav {
+    margin-bottom: 60px;
   }
 }
