@@ -44,53 +44,84 @@
     }
   }
   .container_content {
-    width: 100%;
-    padding-top: 170px;
+    position: relative;
+    z-index: 4;
+    height: 100vh;
     .content {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: end;
       height: 100%;
-      margin: 0px 352px;
+      margin: 0px clamp(10px, 12vw, 300px);
     }
     .info_source_btn {
       display: flex;
-      justify-content: space-between;
-      max-width: 720px;
       .container_small_btn {
         display: flex;
-        gap: 20px;
+        gap: clamp(10px, 1.2vw, 20px);
         button {
-          padding: 0px 13px;
+          padding: 0px clamp(5px, 1.5vw, 15px);
+          img {
+            width: clamp(20px, 4vw, 23px);
+          }
         }
       }
     }
     .container_btn {
       z-index: 2;
       display: flex;
-      gap: 35px;
-      margin-top: 40px;
+      gap: clamp(10px, 3vw, 50px);
+      margin-top: clamp(15px, 3vw, 40px);
       button,
       a {
         display: flex;
         align-items: center;
-        padding: 10px 35px;
-        gap: 10px;
-        font-size: 16px;
-        font-weight: 600;
+        padding: clamp(5px, 1.2vw, 10px) clamp(10px, 2.5vw, 35px);
+        gap: clamp(5px, 2vw, 10px);
         outline: none;
         border: none;
         border-radius: 8px;
-        color: black;
         background-color: rgb(255, 255, 255);
+        h5 {
+          font-weight: 600;
+          color: black;
+        }
         img {
           filter: brightness(0%);
         }
         .img_stream_service {
+          width: clamp(18px, 5vw, 25px);
           filter: none;
           border: 1px solid black;
           border-radius: 5px;
         }
+      }
+    }
+  }
+}
+@media (max-width: 1280px) {
+  .container_banner {
+    .container_content {
+      .content {
+        margin: 0px clamp(10px, 8vw, 300px);
+      }
+    }
+  }
+}
+@media (max-width: 960px) {
+  .container_banner {
+    .container_content {
+      .content {
+        margin: 0px 20px;
+      }
+    }
+  }
+}
+@media (max-width: 580px) {
+  .container_banner {
+    .container_content {
+      .content {
+        margin: 0px 10px;
       }
     }
   }

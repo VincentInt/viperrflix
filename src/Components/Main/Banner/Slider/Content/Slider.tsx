@@ -14,6 +14,8 @@ type propsType = {
 
 const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
   const [dataImgLoadingIndex, setDataImgLoadingIndex] = useState<number[]>([]);
+  const [sizeCard, setSizeCard] = useState({ width: 0, height: 0 });
+
   const containerSliderRef = useRef<HTMLDivElement>(null);
   const cardSliderRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +29,8 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
         (stateSlider - 1 > 0 ? stateSlider - 1 : 0) /
           Math.floor(
             containerSliderCurrent.clientWidth /
-              (cardSliderCurrent.clientWidth + gap)
-          )
+              (cardSliderCurrent.clientWidth + gap),
+          ),
       );
 
       containerSliderCurrent.style.transform = `translateX(-${
@@ -41,7 +43,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
     data.forEach((item, index) => {
       onLoadImg(
         () => setDataImgLoadingIndex((prev) => [...prev, index]),
-        item.Poster
+        item.Poster,
       );
     });
   }, [data]);
@@ -53,7 +55,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       if (containerSliderCurrent !== null && cardSliderCurrent !== null) {
         const countCard = Math.floor(
           containerSliderCurrent.clientWidth /
-            (cardSliderCurrent.clientWidth + 25)
+            (cardSliderCurrent.clientWidth + 5),
         );
         const gap =
           (containerSliderCurrent.clientWidth -
@@ -61,6 +63,12 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
             countCard +
           1;
         containerSliderCurrent.style.gap = `${gap}px`;
+        const width = containerSliderCurrent.clientWidth / 8 - 25 / 2 / 6;
+        const height = width / 0.66;
+        setSizeCard({
+          width: width > 100 ? width : 80,
+          height: height > 120 ? height : 120,
+        });
       }
     }
     window.addEventListener("resize", calculateGap);
@@ -86,26 +94,26 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
         <div ref={containerSliderRef} className="container_state_img_page">
           {data.map((item: OmdbResponse, index: number) => {
             if (containerSliderRef.current === null) return "";
-            const width =
-              containerSliderRef.current.clientWidth / 8 - 25 / 2 / 6;
-            const height = width / 0.66;
             return (
               <div
                 key={index}
                 ref={cardSliderRef}
                 onClick={() => onClickCardSlider(index)}
                 className="container_img"
-                style={{ minWidth: `${width}px`, height: `${height}px` }}
+                style={{
+                  minWidth: `${sizeCard.width}px`,
+                  height: `${sizeCard.height}px`,
+                }}
               >
                 {dataImgLoadingIndex.includes(index) ? (
                   <img
                     className={index === stateSlider ? "chosen" : "not_chosen"}
                     style={{
-                      minWidth: `${width}px`,
+                      minWidth: `${sizeCard.width}px`,
                       height:
                         index === stateSlider
-                          ? `${height}px`
-                          : `${height / 1.1}px`,
+                          ? `${sizeCard.height}px`
+                          : `${sizeCard.height / 1.1}px`,
                     }}
                     src={item.Poster}
                     alt="state_img"

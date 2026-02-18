@@ -118,9 +118,11 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
               }
         }
       >
-        <Link to={`info/movies/${data?.imdbID}`}>Подробнее</Link>
+        <Link to={`info/movies/${data?.imdbID}`}>
+          <h5>Подробнее</h5>
+        </Link>
         <button>
-          Транслируеться на
+          <h5>Трансляция</h5>
           <img
             className="img_stream_service"
             src={streamServiceImg}

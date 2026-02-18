@@ -1,5 +1,6 @@
 .container_banner_nav {
   z-index: 2;
+  margin-bottom: 30px;
   .container_btn {
     display: flex;
     align-items: center;
@@ -10,7 +11,7 @@
   }
   .container_window {
     overflow: hidden;
-    margin-top: 25px;
+    margin-top: clamp(15px, 2vw, 30px);
   }
   .container_state_img_page {
     display: flex;
@@ -26,14 +27,14 @@
       img {
         height: 100%;
         object-fit: cover;
-        border-radius: 16px;
+        border-radius: clamp(8px, 2vw, 16px);
         transition: height 0.1s ease-in;
       }
       .chosen {
-        border-radius: 12px;
+        border-radius: clamp(8px, 2vw, 12px);
       }
       .not_chosen {
-        border-radius: 18px;
+        border-radius: clamp(8px, 2vw, 16px);
         filter: brightness(60%);
       }
     }
