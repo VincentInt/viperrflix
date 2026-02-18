@@ -17,7 +17,7 @@ const Background = () => {
     <div className="container_background">
       <div className="container_blur"></div>
       <div className="noises"></div>
-      <RandomLights />
+      <RandomLights isMobile={isMobile} />
       {isMobile ? "" : <CursorLight />}
     </div>
   );

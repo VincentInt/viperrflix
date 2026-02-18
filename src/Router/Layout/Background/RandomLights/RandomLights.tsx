@@ -15,7 +15,9 @@ type PointDataType = {
   opacity: number;
   size: SizeType;
 };
-
+type propsType = {
+  isMobile: boolean | null;
+};
 function randomPosition(): CoordXYType {
   return {
     x:
@@ -39,7 +41,7 @@ function randomSizePoint(): SizeType {
   };
 }
 function randomPointLightFunc(): PointDataType {
-  const randomLightTime = Math.random() * 25000 + 15000;
+  const randomLightTime = Math.random() * 25000 + 5000;
   const randomLightEndPoint = randomPosition();
   const randomSizeLightPoint = randomSizePoint();
   const randomOpacity = Math.random() * 50 + 50;
@@ -52,21 +54,24 @@ function randomPointLightFunc(): PointDataType {
   };
 }
 
-const RandomLights = () => {
+const RandomLights = ({ isMobile }: propsType) => {
   const [pointsData, setPointsData] = useState<PointDataType[]>([]);
 
   useEffect(() => {
-    const arrayPointsData: PointDataType[] = [];
-    const countPoint = Math.random() * 100 + 300;
-console.log(countPoint);
+    if (isMobile !== null) {
+      const arrayPointsData: PointDataType[] = [];
+      const countPoint =
+        Math.random() * (isMobile ? 20 : 100) + (isMobile ? 20 : 300);
+      console.log(countPoint);
 
-    for (let i = 0; i < countPoint; i++) {
-      const randomPoint = randomPointLightFunc();
-      arrayPointsData[i] = randomPoint;
-      setTimeout(() => randomTimeMoveFunc(i), 10);
+      for (let i = 0; i < countPoint; i++) {
+        const randomPoint = randomPointLightFunc();
+        arrayPointsData[i] = randomPoint;
+        setTimeout(() => randomTimeMoveFunc(i), 10);
+      }
+      setPointsData(arrayPointsData);
     }
-    setPointsData(arrayPointsData);
-  }, []);
+  }, [isMobile]);
 
   function randomTimeMoveFunc(index: number) {
     const { time, finishPoint } = randomPointLightFunc();
@@ -82,13 +87,16 @@ console.log(countPoint);
     });
 
     setTimeout(() => randomTimeMoveFunc(index), time);
-    setTimeout(() => {
-      setPointsData((prev: PointDataType[]) => {
-        const clone = [...prev];
-        clone[index] = { ...clone[index], opacity: Math.random() * 50 + 50 };
-        return clone;
-      });
-    }, time + Math.random() * 5000 + 4000);
+    setTimeout(
+      () => {
+        setPointsData((prev: PointDataType[]) => {
+          const clone = [...prev];
+          clone[index] = { ...clone[index], opacity: Math.random() * 50 + 50 };
+          return clone;
+        });
+      },
+      time + Math.random() * 5000 + 4000,
+    );
   }
 
   return (
