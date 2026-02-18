@@ -7,40 +7,103 @@ import { useEffect, useState } from "react";
 import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
 import { onLoadImg } from "../../utils/onLoadImg/onLoadImg";
 import LoadIndicator from "../../UI/LoadIndicator/LoadIndicator";
+import { fetchTraktItem } from "../../utils/fetch/fetchTrakt";
+import type {
+  TraktPeopleResponse,
+  TraktResponse,
+} from "../../utils/type/TraktType";
+import { fetchTvmaze } from "../../utils/fetch/fetchTvmaze";
 
 type StatusImg = "load" | "done" | "error";
+type TvmazeType = {
+  person: {
+    name: string;
+    country: {
+      name: string;
+      code: string;
+      timezone: string;
+    };
+    birthday: string;
+    image: {
+      medium: string;
+      original: string;
+    };
+  };
+};
 
 const MoviesInfo = () => {
-  const [dataMovies, setDataMovies] = useState<OmdbResponse>();
+  const [dataCardTrakt, setdataCardTrakt] = useState<TraktResponse>();
+  const [dataCardOmd, setDataCardOmd] = useState<OmdbResponse>();
+
+  const [dataPeopleTrakt, setDataPeopleTrakt] = useState<TraktPeopleResponse>();
+  const [dataPeopleTvmaze, setDataPeopleTvmaze] = useState<TvmazeType[]>([]);
+
   const [loadImg, setLoadImg] = useState<StatusImg>("load");
+
   const params = useParams<{ id: string; type: string }>();
 
   useEffect(() => {
     if (params.id?.length && params.type?.length) {
-      fetchOmdb<OmdbResponse>(`&i=${params.id}`, (json: OmdbResponse) => {
-        setDataMovies(json);
-      });
+      fetchTraktItem<TraktResponse>(
+        `${params.type}/${params.id}`,
+        (json: TraktResponse) => {
+          setdataCardTrakt(json);
+        }
+      );
+      fetchTraktItem<TraktPeopleResponse>(
+        `${params.type}/${params.id}/people`,
+        (json: TraktPeopleResponse) => {
+          setDataPeopleTrakt(json);
+        }
+      );
     }
   }, [params]);
 
   useEffect(() => {
-    if (dataMovies !== undefined) {
-      onLoadImg(
-        (status) => setLoadImg(() => (status ? "done" : "error")),
-        dataMovies.Poster
+    if (dataCardTrakt) {
+      fetchOmdb<OmdbResponse>(
+        `&i=${dataCardTrakt.ids.imdb}`,
+        (json: OmdbResponse) => {
+          setDataCardOmd(json);
+        }
       );
     }
-  }, [dataMovies]);
+  }, [dataCardTrakt]);
 
+  useEffect(() => {
+    const array: TvmazeType[] = [];
+
+    dataPeopleTrakt?.cast.forEach((item) => {
+      fetchTvmaze<TvmazeType>(
+        `search/people?q=${item.person.name}`,
+        (json: TvmazeType[]) => {
+          if (json[0]?.person?.image?.original) {
+            array.push(json[0]);
+          }
+        }
+      );
+    });
+
+    setDataPeopleTvmaze(array);
+  }, [dataPeopleTrakt]);
+
+  useEffect(() => {
+    if (dataCardOmd !== undefined) {
+      onLoadImg(
+        (status) => setLoadImg(() => (status ? "done" : "error")),
+        dataCardOmd.Poster
+      );
+    }
+  }, [dataCardOmd]);
   return (
     <section className="section_movies_info">
-      {dataMovies ? (
+      {dataCardOmd ? (
         <div className="main_container_info">
           {loadImg === "load" ? <LoadIndicator /> : ""}
           {loadImg === "done" ? (
             <img
               className="img_poster"
-              src={dataMovies.Poster}
+              src={dataCardOmd.Poster}
               alt="card_img"
             />
           ) : (
@@ -56,23 +119,42 @@ const MoviesInfo = () => {
             ""
           )}
           <div className="container_info">
-            <h1 className="title">{`${dataMovies.Title} (${dataMovies.Year})`}</h1>
+            <h1 className="title">{`${dataCardOmd.Title} (${dataCardOmd.Year})`}</h1>
             <div className="container_flex_info">
-              <RatingIndicator item={dataMovies} />
-              <h5>{dataMovies.Language}</h5>
-              <h5>{dataMovies.Runtime}</h5>
+              <RatingIndicator item={dataCardOmd} />
+              <h5>{dataCardOmd.Language}</h5>
+              <h5>{dataCardOmd.Runtime}</h5>
             </div>
             <div className="container_text_info">
               <h5>About the movie:</h5>
-              <h5>Rated: +{dataMovies.Rated}</h5>
-              <h5>Released: {dataMovies.Released}</h5>
-              <h5>Country: {dataMovies.Country}</h5>
-              <h5>Genre: {dataMovies.Genre}</h5>
-              <h5>Director: {dataMovies.Director}</h5>
-              <h5>Writer: {dataMovies.Writer}</h5>
-              <h5>Actors: {dataMovies.Actors}</h5>
-              <h5>BoxOffice: {dataMovies.BoxOffice}</h5>
-              <p>{dataMovies.Plot}</p>
+              <h5>Rated: +{dataCardOmd.Rated}</h5>
+              <h5>Released: {dataCardOmd.Released}</h5>
+              <h5>Country: {dataCardOmd.Country}</h5>
+              <h5>Genre: {dataCardOmd.Genre}</h5>
+              <h5>Director: {dataCardOmd.Director}</h5>
+              <h5>Writer: {dataCardOmd.Writer}</h5>
+              <h5>BoxOffice: {dataCardOmd.BoxOffice}</h5>{" "}
+              <h5 className="title_actors">Actors: {dataCardOmd.Actors}</h5>
+              {dataPeopleTvmaze.length ? (
+                <div className="container_actors">
+                  {dataPeopleTvmaze?.map((item: TvmazeType, index: number) => {
+                    return (
+                      <div key={index} className="actors_card">
+                        <img
+                          src={item?.person?.image?.original}
+                          alt="actors_img"
+                        />
+                        <h5>{item.person.name}</h5>
+                        <h6>{item.person.country?.timezone}</h6>
+                        <h6>{item.person.birthday}</h6>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
+              <p>{dataCardOmd.Plot}</p>
             </div>
           </div>
         </div>

@@ -17,3 +17,11 @@ export const fetchTrakt = <T>(params: string, set: (json: T[]) => any) => {
     })
     .catch((err) => new Error(err));
 };
+export const fetchTraktItem = <T>(params: string, set: (json: T) => any) => {
+  fetch(`${URL_TRAKT}${params}`, OPTIONS_TRAKT)
+    .then((res) => res.json())
+    .then((json) => {
+      set(json);
+    })
+    .catch((err) => new Error(err));
+};

@@ -8,7 +8,7 @@ import type { OmdbResponse } from "../../utils/type/OmdbType";
 const Main = () => {
   return (
     <>
-      <Banner />
+      {/* <Banner />
       <PopularCategory />
       <CardList
         title={"trending"}
@@ -45,7 +45,7 @@ const Main = () => {
           index: number,
           ref?: RefObject<HTMLDivElement | null>
         ) => <ShortCard key={index} item={item} ref={ref} />}
-      />
+      /> */}
     </>
   );
 };

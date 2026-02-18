@@ -162,7 +162,9 @@ const CardList = ({
                 return (
                   <Link
                     key={index}
-                    to={`/info/${paramsTypeCard.split("/")[0]}/${item.imdbID}`}
+                    to={`/info/${paramsTypeCard.split("/")[0]}/${
+                      dataCardsTrakt[index]?.ids?.trakt
+                    }`}
                   >
                     {renderCard(item, index, ref)}
                   </Link>
