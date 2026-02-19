@@ -65,6 +65,6 @@
     max-width: 850px;
     font-size: clamp(15px, 2vw, 24px);
     font-weight: 500;
-    margin-top: clamp(10px, 2vw, 25px);
+    margin-top: clamp(10px, 2.5vw, 30px);
   }
 }

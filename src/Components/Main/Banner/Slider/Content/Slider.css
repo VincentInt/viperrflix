@@ -11,7 +11,7 @@
   }
   .container_window {
     overflow: hidden;
-    margin-top: clamp(15px, 2vw, 30px);
+    margin-top: clamp(10px, 2.5vw, 30px);
   }
   .container_state_img_page {
     display: flex;
@@ -40,8 +40,8 @@
     }
   }
 }
-@media (max-width: 580px) {
+/* @media (max-width: 580px) {
   .container_banner_nav {
     margin-bottom: 60px;
   }
-}
+} */

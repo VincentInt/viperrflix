@@ -62,7 +62,6 @@ const RandomLights = ({ isMobile }: propsType) => {
       const arrayPointsData: PointDataType[] = [];
       const countPoint =
         Math.random() * (isMobile ? 20 : 100) + (isMobile ? 20 : 300);
-      console.log(countPoint);
 
       for (let i = 0; i < countPoint; i++) {
         const randomPoint = randomPointLightFunc();

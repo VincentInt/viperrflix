@@ -28,13 +28,13 @@ const PopularCategory = () => {
           setDataPopularTraktMovie((prev: TraktResponse[]) => {
             if (!json || json.length === 0) return prev;
             const movieItem = json.find(
-              (item: TraktReadMoreResponse) => item.movie
+              (item: TraktReadMoreResponse) => item.movie,
             );
             if (movieItem && movieItem.movie) {
               return [...prev, movieItem.movie];
             }
             return prev;
-          })
+          }),
       );
     });
   }, []);
@@ -42,7 +42,7 @@ const PopularCategory = () => {
     if (dataPopularTraktMovie.length === 4) {
       dataPopularTraktMovie.forEach((item: TraktResponse) => {
         fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
-          setDataPopularGenre((prev: OmdbResponse[]) => [...prev, json])
+          setDataPopularGenre((prev: OmdbResponse[]) => [...prev, json]),
         );
       });
     }
@@ -52,7 +52,7 @@ const PopularCategory = () => {
       dataPopularGenre.forEach((item: OmdbResponse, index: number) => {
         onLoadImg(
           () => setLoadImgIndexs((prev: number[]) => [...prev, index]),
-          item.Poster
+          item.Poster,
         );
       });
     }
@@ -60,24 +60,32 @@ const PopularCategory = () => {
   return (
     <section className="section_popular_category">
       <div className="container_card_popular_category">
-        {dataPopularGenre.map((item, index: number) => {
-          return (
-            <Link
-              to={`collection/movies/popular?genres=${popularGenreArray[index]}&limit=20`}
-              key={index}
-              className="card_popular_category"
-            >
-              <div className="vintage"></div>
-              {loadImgIndexs.includes(index) ? (
-                <img src={item.Poster} alt="popular_category_img" />
-              ) : (
-                <LoadIndicator />
-              )}
+        {dataPopularGenre.length
+          ? dataPopularGenre.map((item, index: number) => {
+              return (
+                <Link
+                  to={`collection/movies/popular?genres=${popularGenreArray[index]}&limit=20`}
+                  key={index}
+                  className="card_popular_category"
+                >
+                  <div className="vintage"></div>
+                  {loadImgIndexs.includes(index) ? (
+                    <img src={item.Poster} alt="popular_category_img" />
+                  ) : (
+                    <LoadIndicator />
+                  )}
 
-              <h4 className="text_card">{popularGenreArray[index]}</h4>
-            </Link>
-          );
-        })}
+                  <h4 className="text_card">{popularGenreArray[index]}</h4>
+                </Link>
+              );
+            })
+          : popularGenreArray.map((_, index: number) => {
+              return (
+                <div key={index} className="card_popular_category loading">
+                  <LoadIndicator />
+                </div>
+              );
+            })}
       </div>
     </section>
   );

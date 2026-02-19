@@ -15,10 +15,18 @@ type propsType = {
 const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
   const [dataImgLoadingIndex, setDataImgLoadingIndex] = useState<number[]>([]);
   const [sizeCard, setSizeCard] = useState({ width: 0, height: 0 });
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
 
   const containerSliderRef = useRef<HTMLDivElement>(null);
   const cardSliderRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setIsMobile(
+      /mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+        navigator.userAgent,
+      ),
+    );
+  }, []);
   useEffect(() => {
     const containerSliderCurrent = containerSliderRef.current;
     const cardSliderCurrent = cardSliderRef.current;
@@ -55,7 +63,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       if (containerSliderCurrent !== null && cardSliderCurrent !== null) {
         const countCard = Math.floor(
           containerSliderCurrent.clientWidth /
-            (cardSliderCurrent.clientWidth + 5),
+            (cardSliderCurrent.clientWidth + 8),
         );
         const gap =
           (containerSliderCurrent.clientWidth -
@@ -66,8 +74,8 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
         const width = containerSliderCurrent.clientWidth / 8 - 25 / 2 / 6;
         const height = width / 0.66;
         setSizeCard({
-          width: width > 100 ? width : 80,
-          height: height > 120 ? height : 120,
+          width: width > 110 ? width : 110,
+          height: height > 170 ? height : 170,
         });
       }
     }
@@ -81,7 +89,16 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
   };
 
   return (
-    <div className="container_banner_nav">
+    <div
+      style={
+        isMobile && window.visualViewport?.height
+          ? {
+              marginBottom: `${window.screen.height - window.visualViewport?.height + 10}px`,
+            }
+          : {marginBottom: `30px`}
+      }
+      className="container_banner_nav"
+    >
       <div className="container_btn">
         <button onClick={() => onChangeClickBtnSlider(-1)}>
           <img src={leftArrowImg} alt="left_btn_arrow_img" />

@@ -88,7 +88,7 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                   }
             }
           >
-            <h3> {data.Genre}</h3>
+            <h3>{data?.Genre}</h3>
           </div>
         </div>
         <p

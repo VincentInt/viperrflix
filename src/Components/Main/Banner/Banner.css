@@ -71,7 +71,7 @@
       z-index: 2;
       display: flex;
       gap: clamp(10px, 3vw, 50px);
-      margin-top: clamp(15px, 3vw, 40px);
+      margin-top: clamp(10px, 2.5vw, 30px);
       button,
       a {
         display: flex;
@@ -123,6 +123,13 @@
       .content {
         margin: 0px 10px;
       }
+    }
+    .container_blur_transition {
+      z-index: 2;
+      position: absolute;
+      bottom: -6%;
+      width: 100%;
+      height: 100px;
     }
   }
 }

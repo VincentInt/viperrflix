@@ -1,8 +1,10 @@
 .container_banner_nav_load {
+  margin-bottom: 30px;
   .container_btn {
     .loading {
-      width: 80px;
-      height: 40px;
+      max-width: 50px;
+      width: 100%;
+      height: clamp(30px, 8vw, 50px);
     }
   }
   .container_state_img_page {
@@ -10,10 +12,11 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 15px;
-    gap: 35px;
+    gap: 8px;
     .loading {
-      width: 150px;
-      height: 220px;
+      max-width: 150px;
+      width: 100%;
+      height: clamp(100px, 26vw, 220px);
     }
   }
   .loading {
@@ -29,8 +32,8 @@
       height: 220%;
       background-color: rgb(77, 77, 77);
       box-shadow: 0px 0px 25px 40px rgb(77, 77, 77);
-      transform: translateX(-400%);
-      animation: animation_load_elem 10s ease-in infinite;
+      transform: translateX(-300%);
+      animation: animation_load_elem 5s ease-in infinite;
     }
   }
 }

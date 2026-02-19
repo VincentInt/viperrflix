@@ -45,8 +45,6 @@ const CardList = ({
   const [paramsTypeCard, setParamsTypeCard] = useState<string>("");
 
   const location = useLocation();
-
-  const containerCardsRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -107,41 +105,7 @@ const CardList = ({
     }
   }, [dataCardsTrakt]);
 
-  useEffect(() => {
-    let countCard: number = 5;
-    let timer: number;
 
-    function calculateGap() {
-      const containerCardsCurrent = containerCardsRef.current;
-      const cardCurrent = cardRef.current;
-      if (containerCardsCurrent !== null && cardCurrent !== null) {
-        const gap =
-          (containerCardsCurrent.clientWidth -
-            cardCurrent.clientWidth * countCard) /
-          (countCard - 1);
-        if (
-          gap >=
-          cardCurrent.clientWidth / countCard + gap / (countCard - 1)
-        ) {
-          countCard += 1;
-          timer = setTimeout(() => {
-            calculateGap();
-          }, 0);
-        } else if (gap < 20) {
-          countCard -= 1;
-          timer = setTimeout(() => {
-            calculateGap();
-          }, 0);
-        } else {
-          containerCardsCurrent.style.gap = `${gap - 1.5 * 2}px`;
-        }
-      }
-    }
-    window.addEventListener("resize", () => {
-      calculateGap(), clearTimeout(timer);
-    });
-    calculateGap();
-  }, [dataCardsOmdb, containerCardsRef, cardRef]);
   return (
     <section className="section_card_list">
       <div className="container_card_list">
@@ -149,13 +113,13 @@ const CardList = ({
           <h3 className="title_text">{title}</h3>
           {statusMore ? (
             <Link to={`collection/${paramsUrl}`} className="btn_show_more">
-              <h5> Показать больше</h5>
+              <h5>Показать больше</h5>
             </Link>
           ) : (
             ""
           )}
         </div>
-        <div ref={containerCardsRef} className="container_cards">
+        <div className="container_cards">
           {dataCardsOmdb.length > 0
             ? dataCardsOmdb.map((item: OmdbResponse, index: number) => {
                 const ref = index === 0 ? cardRef : undefined;

@@ -2,7 +2,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  width: 220px;
+  width: 100%;
   border: 1.5px solid rgba(255, 255, 255, 0.22);
   border-radius: 12px;
   background-color: rgba(24, 24, 27, 0.619);
@@ -31,6 +31,8 @@
   }
   .container_rating {
     width: 15%;
+    padding: 0;
+    border: none;
   }
   .container_text {
     display: flex;
