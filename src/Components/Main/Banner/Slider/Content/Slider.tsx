@@ -93,7 +93,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       style={
         isMobile && window.visualViewport?.height
           ? {
-              marginBottom: `${window.screen.height - window.visualViewport?.height + 10}px`,
+              marginBottom: `${window.screen.height - window.visualViewport?.height}px`,
             }
           : {marginBottom: `30px`}
       }
