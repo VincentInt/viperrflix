@@ -41,7 +41,7 @@ function randomSizePoint(): SizeType {
   };
 }
 function randomPointLightFunc(): PointDataType {
-  const randomLightTime = Math.random() * 25000 + 5000;
+  const randomLightTime = Math.random() * 55000 + 5000;
   const randomLightEndPoint = randomPosition();
   const randomSizeLightPoint = randomSizePoint();
   const randomOpacity = Math.random() * 50 + 50;
@@ -61,7 +61,7 @@ const RandomLights = ({ isMobile }: propsType) => {
     if (isMobile !== null) {
       const arrayPointsData: PointDataType[] = [];
       const countPoint =
-        Math.random() * (isMobile ? 20 : 100) + (isMobile ? 20 : 300);
+        Math.random() * (isMobile ? 30 : 100) + (isMobile ? 20 : 300);
 
       for (let i = 0; i < countPoint; i++) {
         const randomPoint = randomPointLightFunc();
