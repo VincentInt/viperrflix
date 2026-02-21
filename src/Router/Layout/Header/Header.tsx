@@ -118,10 +118,10 @@ const Header = () => {
             </Link>
           </div>
           <Link to={"/collection/movies/trending"}>
-            <h5>Фильмы</h5>
+            <h5>Все фильмы</h5>
           </Link>
           <Link to={"/collection/shows/trending"}>
-            <h5>Сериалы</h5>
+            <h5>Все сериалы</h5>
           </Link>
         </nav>
       </div>

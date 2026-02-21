@@ -5,7 +5,6 @@
     border-radius: 5px;
     backdrop-filter: blur(20px);
     .text_rating {
-      font-size: 12px;
       text-wrap: nowrap;
     }
   }

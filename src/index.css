@@ -5,6 +5,9 @@
 html {
   scroll-behavior: smooth;
 }
+body{
+  overflow-x: hidden;
+}
 #root {
   position: relative;
   width: 100%;
@@ -43,7 +46,7 @@ h4 {
   font-size: clamp(15px, 2vw, 22px);
 }
 h5 {
-  font-size: clamp(12px, 2vw, 20px);
+  font-size: clamp(13px, 2vw, 20px);
   font-weight: 500;
 }
 h6 {

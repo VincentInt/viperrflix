@@ -1,40 +1,43 @@
 .section_movies_info {
-  padding-top: 150px;
-  margin: 0px 352px;
-  .main_container_info {
+  padding-top: clamp(100px, 25vw, 150px);
+  margin: 0px clamp(10px, 12vw, 300px);
+  .main_container_info,
+  .main_container_info_loading {
     display: flex;
-    padding: 55px 45px;
-    gap: 80px;
+    padding: 45px 45px;
+    gap: clamp(15px, 5vw, 80px);
     border: 1.5px solid rgba(255, 255, 255, 0.22);
     border-radius: 12px;
     background-color: rgba(24, 24, 27, 0.619);
     backdrop-filter: blur(10px);
     .img_poster {
       object-fit: cover;
-      width: 280px;
-      height: 400px;
+      width: clamp(220px, 40vw, 280px);
+      height: fit-content;
       border: 1.5px solid rgba(255, 255, 255, 0.22);
       border-radius: 12px;
     }
     .container_flex_info {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: clamp(10px, 2vw, 15px);
     }
     .container_info {
+      width: 100%;
       .container_text_info {
         display: flex;
         flex-direction: column;
         max-width: 700px;
-        margin-top: 15px;
-        gap: 4px;
+        margin-top: clamp(10px, 2vw, 15px);
+        gap: clamp(0px, 0.5vw, 4px);
         .title_actors {
-          margin-top: 10px;
+          margin-top: clamp(10px, 2vw, 15px);
         }
         p {
-          margin-top: 15px;
+          margin-top: clamp(10px, 2vw, 15px);
+          font-size: clamp(13px, 2vw, 20px);
+          font-weight: 500;
         }
-
         .container_actors {
           overflow-y: hidden;
           overflow-x: scroll;
@@ -91,5 +94,132 @@
         }
       }
     }
+  }
+  .main_container_info_loading {
+    .img_poster {
+      min-width: clamp(220px, 40vw, 280px);
+      border: none;
+      aspect-ratio: 9/12;
+    }
+    .container_info {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(5px, 2vw, 10px);
+    }
+    .title {
+      width: 55%;
+      height: clamp(40px, 3vw, 60px);
+    }
+    .main_info {
+      width: 35%;
+      height: 22px;
+    }
+    .img_poster,
+    .title,
+    .main_info {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      background-color: rgb(51, 51, 51);
+      .glow {
+        width: 60%;
+        height: 220%;
+        background-color: rgb(77, 77, 77);
+        box-shadow: 0px 0px 25px 40px rgb(77, 77, 77);
+        transform: translateX(-400%);
+        animation: animation_load_elem 5s ease-in infinite;
+      }
+    }
+    .container_info {
+      .container_text_info {
+        gap: clamp(5px, 2vw, 10px);
+        div {
+          height: 22px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          border-radius: 4px;
+          background-color: rgb(51, 51, 51);
+          .glow {
+            width: 60%;
+            height: 220%;
+            background-color: rgb(77, 77, 77);
+            box-shadow: 0px 0px 25px 40px rgb(77, 77, 77);
+            transform: translateX(-400%);
+            animation: animation_load_elem 5s ease-in infinite;
+          }
+          &:nth-child(1) {
+            width: 30%;
+          }
+          &:nth-child(2) {
+            width: 25%;
+          }
+          &:nth-child(3) {
+            width: 40%;
+          }
+          &:nth-child(4) {
+            width: 55%;
+          }
+          &:nth-child(5) {
+            width: 55%;
+            height: 40px;
+          }
+          &:nth-child(6) {
+            width: 55%;
+          }
+          &:nth-child(7) {
+            width: 55%;
+          }
+          &:nth-child(8) {
+            width: 55%;
+          }
+          &:nth-child(9) {
+            width: 100%;
+            height: 40px;
+          }
+          &:nth-child(10) {
+            width: 100%;
+            height: 80px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1280px) {
+  .section_movies_info {
+    margin: 0px clamp(10px, 8vw, 300px);
+  }
+}
+@media (max-width: 960px) {
+  .section_movies_info {
+    margin: 0px 20px;
+    .main_container_info,
+    .main_container_info_loading {
+      padding: clamp(30px, 3.5vw, 45px) clamp(10px, 3.5vw, 45px);
+    }
+  }
+}
+@media (max-width: 720px) {
+  .section_movies_info {
+    .main_container_info,
+    .main_container_info_loading {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+@media (max-width: 580px) {
+  .section_movies_info {
+    margin: 0px 10px;
+  }
+}
+@keyframes animation_load_elem {
+  0% {
+    transform: translateX(-400%);
+  }
+  100% {
+    transform: translateX(2400%);
   }
 }

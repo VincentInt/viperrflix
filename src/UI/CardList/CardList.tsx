@@ -29,7 +29,7 @@ type Props = {
   renderCard: (
     item: OmdbResponse,
     index: number,
-    ref?: RefObject<HTMLDivElement | null>
+    ref?: RefObject<HTMLDivElement | null>,
   ) => ReactNode;
   setStatePage?: Dispatch<SetStateAction<StatePage>>;
 };
@@ -75,11 +75,11 @@ const CardList = ({
               } else {
                 return [];
               }
-            })
+            }),
         );
       } else {
         fetchTrakt<TraktResponse>(paramsTypeCard, (json: TraktResponse[]) =>
-          setDataCardsTrakt(json)
+          setDataCardsTrakt(json),
         );
       }
     }
@@ -104,7 +104,6 @@ const CardList = ({
       });
     }
   }, [dataCardsTrakt]);
-
 
   return (
     <section className="section_card_list">

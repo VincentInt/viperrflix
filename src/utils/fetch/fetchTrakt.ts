@@ -1,4 +1,4 @@
-const URL_TRAKT = "https://api.trakt.tv/";
+const URL_TRAKT = "https://cors-anywhere.herokuapp.com/https://api.trakt.tv/";
 const OPTIONS_TRAKT = {
   method: "GET",
   headers: {

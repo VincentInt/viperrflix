@@ -19,7 +19,7 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
   useEffect(() => {
     onLoadImg(
       (status) => setLoadImg(() => (status ? "done" : "error")),
-      item.Poster
+      item.Poster,
     );
   }, [item]);
 
