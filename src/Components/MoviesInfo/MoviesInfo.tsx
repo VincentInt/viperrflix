@@ -98,69 +98,66 @@ const MoviesInfo = () => {
   return (
     <section className="section_movies_info">
       {dataCardOmd ? (
-         (
-          <div className="main_container_info">
-            {loadImg === "load" ? <LoadIndicator /> : ""}
-            {loadImg === "done" ? (
-              <img
-                className="img_poster"
-                src={dataCardOmd.Poster}
-                alt="card_img"
-              />
-            ) : (
-              ""
-            )}
-            {loadImg === "error" ? (
-              <img
-                className="img_poster"
-                src={errorCardImg}
-                alt="error_card_img"
-              />
-            ) : (
-              ""
-            )}
-            <div className="container_info">
-              <h1 className="title">{`${dataCardOmd.Title} (${dataCardOmd.Year})`}</h1>
-              <div className="container_flex_info">
-                <RatingIndicator item={dataCardOmd} />
-                <h5>{dataCardOmd.Language}</h5>
-                <h5>{dataCardOmd.Runtime}</h5>
-              </div>
-              <div className="container_text_info">
-                <h5>About the movie:</h5>
-                <h5>Rated: +{dataCardOmd.Rated}</h5>
-                <h5>Released: {dataCardOmd.Released}</h5>
-                <h5>Country: {dataCardOmd.Country}</h5>
-                <h5>Genre: {dataCardOmd.Genre}</h5>
-                <h5>Director: {dataCardOmd.Director}</h5>
-                <h5>Writer: {dataCardOmd.Writer}</h5>
-                <h5>BoxOffice: {dataCardOmd.BoxOffice}</h5>{" "}
-                <h5 className="title_actors">Actors: {dataCardOmd.Actors}</h5>
-                {dataPeopleTvmaze.length ? (
-                  <div className="container_actors">
-                    {dataPeopleTvmaze?.map((item: TvmazeType, index: number) => {
-                      return (
-                        <div key={index} className="actors_card">
-                          <img
-                            src={item?.person?.image?.original}
-                            alt="actors_img"
-                          />
-                          <h5>{item.person.name}</h5>
-                          <h6>{item.person.country?.timezone}</h6>
-                          <h6>{item.person.birthday}</h6>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-                <p>{dataCardOmd.Plot}</p>
-              </div>
+        <div className="main_container_info">
+          {loadImg === "load" ? <LoadIndicator /> : ""}
+          {loadImg === "done" ? (
+            <img
+              className="img_poster"
+              src={dataCardOmd.Poster}
+              alt="card_img"
+            />
+          ) : (
+            ""
+          )}
+          {loadImg === "error" ? (
+            <img
+              className="img_poster"
+              src={errorCardImg}
+              alt="error_card_img"
+            />
+          ) : (
+            ""
+          )}
+          <div className="container_info">
+            <h2 className="title">{`${dataCardOmd.Title} (${dataCardOmd.Year})`}</h2>
+            <div className="container_flex_info">
+              <RatingIndicator item={dataCardOmd} />
+              <h5>{dataCardOmd.Language}</h5>
+              <h5>{dataCardOmd.Runtime}</h5>
+            </div>
+            <div className="container_text_info">
+              <h5>About the movie:</h5>
+              <h5>Rated: +{dataCardOmd.Rated}</h5>
+              <h5>Released: {dataCardOmd.Released}</h5>
+              <h5>Country: {dataCardOmd.Country}</h5>
+              <h5>Genre: {dataCardOmd.Genre}</h5>
+              <h5>Director: {dataCardOmd.Director}</h5>
+              <h5>Writer: {dataCardOmd.Writer}</h5>
+              <h5>BoxOffice: {dataCardOmd.BoxOffice}</h5>{" "}
+              <h5 className="title_actors">Actors: {dataCardOmd.Actors}</h5>
+              {dataPeopleTvmaze.length ? (
+                <div className="container_actors">
+                  {dataPeopleTvmaze?.map((item: TvmazeType, index: number) => {
+                    return (
+                      <div key={index} className="actors_card">
+                        <img
+                          src={item?.person?.image?.original}
+                          alt="actors_img"
+                        />
+                        <h5>{item.person.name}</h5>
+                        <h6>{item.person.country?.timezone}</h6>
+                        <h6>{item.person.birthday}</h6>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
+              <p>{dataCardOmd.Plot}</p>
             </div>
           </div>
-        )
-      
+        </div>
       ) : (
         <div className="main_container_info_loading">
           <div className="img_poster">
@@ -206,7 +203,6 @@ const MoviesInfo = () => {
               <div>
                 <div className="glow"></div>
               </div>
-              
             </div>
           </div>
         </div>
