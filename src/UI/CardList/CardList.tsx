@@ -98,12 +98,12 @@ const CardList = ({
               statusLoad: false,
             }));
           }
-
           setDataCardsOmdb((prev) => [...prev, json]);
         });
       });
     }
   }, [dataCardsTrakt]);
+  console.log(dataCardsOmdb);
 
   return (
     <section className="section_card_list">
@@ -126,7 +126,9 @@ const CardList = ({
                   <Link
                     key={index}
                     to={`/info/${paramsTypeCard.split("/")[0]}/${
-                      dataCardsTrakt[index]?.ids?.trakt
+                      dataCardsTrakt.filter(
+                        (itemFilter) => itemFilter.ids.imdb === item.imdbID,
+                      )[0].ids?.trakt
                     }`}
                   >
                     {renderCard(item, index, ref)}
