@@ -103,8 +103,6 @@ const CardList = ({
       });
     }
   }, [dataCardsTrakt]);
-  console.log(dataCardsOmdb);
-
   return (
     <section className="section_card_list">
       <div className="container_card_list">
