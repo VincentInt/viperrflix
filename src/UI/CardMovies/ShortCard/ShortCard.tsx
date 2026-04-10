@@ -1,33 +1,94 @@
 import "./ShortCard.css";
 import favoriteImg from "../../../../public/img/icon/Vector (1).png";
-import listDesiredImg from "../../../../public/img/icon/Vector (2).png";
+import favoriteRedImg from "../../../../public/img/icon/Vector red.png";
 import errorCardImg from "../../../../public/img/izobr.-otsutst-scaled.jpg";
 import LoadIndicator from "../../LoadIndicator/LoadIndicator";
 import { onLoadImg } from "../../../utils/onLoadImg/onLoadImg";
 import { forwardRef, useEffect, useState } from "react";
-import type { OmdbResponse } from "../../../utils/type/OmdbType";
+import type { TraktResponse } from "../../../utils/type/TraktType";
 import RatingIndicator from "../../RatingIndicator/RatingIndicator";
+import { Link } from "react-router-dom";
 
 type Props = {
-  item: OmdbResponse;
+  item: TraktResponse;
 };
 type StatusImg = "load" | "done" | "error";
 
+type CookieType = {
+  loginStatus: boolean;
+  userLogin: {
+    name: string;
+    login: string;
+    password: string;
+    email: string;
+    date: string;
+  };
+  favorite: string[];
+  countView: number;
+  data: {
+    userLogin: {
+      name: string;
+      login: string;
+      password: string;
+      email: string;
+      date: string;
+    };
+    favorite: string[];
+    countView: number;
+  }[];
+};
+
+const ageRating = {
+  G: "0+",
+  PG: "6+",
+  "PG-13": "13+",
+  R: "17+",
+  "NC-17": "18+",
+};
+
 const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
   const [loadImg, setLoadImg] = useState<StatusImg>("load");
+  const [cookies, setCookies] = useState<CookieType>();
 
   useEffect(() => {
     onLoadImg(
       (status) => setLoadImg(() => (status ? "done" : "error")),
-      item.Poster,
+      `/viperrflix/img/movies/${item.images.poster}`,
     );
   }, [item]);
+  useEffect(() => {
+    if (document.cookie.length) {
+      setCookies(JSON.parse(document.cookie.split("userData=")[1]));
+    }
+  }, []);
+
+  function onFavorite() {
+    if (cookies) {
+      const cookiesClone = JSON.parse(document.cookie.split("userData=")[1]);
+      if (cookiesClone.favorite.includes(item.ids.trakt.toString())) {
+        cookiesClone.favorite = cookiesClone.favorite.filter(
+          (itemFitler: any) => itemFitler !== item.ids.trakt.toString(),
+        );
+      } else {
+        cookiesClone.favorite.push(item.ids.trakt.toString());
+      }
+      document.cookie = `userData=${JSON.stringify(cookiesClone)}; path=/`;
+      setCookies(cookiesClone);
+    }
+  }
 
   return (
     <div ref={ref} className="card">
       <div className="container_img">
         {loadImg === "load" ? <LoadIndicator /> : ""}
-        {loadImg === "done" ? <img src={item.Poster} alt="card_img" /> : ""}
+        {loadImg === "done" ? (
+          <img
+            src={`/viperrflix/img/movies/${item.images.poster}`}
+            alt="card_img"
+          />
+        ) : (
+          ""
+        )}
         {loadImg === "error" ? (
           <img src={errorCardImg} alt="error_card_img" />
         ) : (
@@ -36,11 +97,11 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
       </div>
       <div className="container_text">
         <div className="container_flex_text name_rating">
-          <h5 className="text_name">{item.Title}</h5>
-          <RatingIndicator item={item} />
+          <h5 className="text_name">{item.title}</h5>
+          <RatingIndicator rating={item.rating} />
         </div>
         <div className="container_flex_text container_genre">
-          {item?.Genre?.split(",").map((item, index) => {
+          {item.genres.map((item, index) => {
             return (
               <h6 key={index} className="genre">
                 {item}
@@ -48,21 +109,42 @@ const ShortCard = forwardRef<HTMLDivElement | null, Props>(({ item }, ref) => {
             );
           })}
         </div>
-        <div className="container_flex_text container_info_nav">
+        <div className="container_flex_text ">
           <div>
-            <h6>Age: {item.Rated}</h6>
             <h6>
-              Time line:{" "}
-              {Math.floor((+item?.Runtime?.split(" ")[0] / 60) * 10) / 10}H
+              <span>Рейтинг: </span>
+              {ageRating[item.certification as keyof typeof ageRating] ?? "—"}
             </h6>
-            <h6>Date: {item.Released}</h6>
+            <h6>
+              <span>Длительность: </span>
+              {Math.floor((+item?.runtime / 60) * 10) / 10}ч
+            </h6>
+            <h6>
+              <span>Вышел: </span>
+              {item.released.split("-").reverse().join(".")}г
+            </h6>
           </div>
+        </div>
+        <div className="container_info_nav">
+          <Link to={`/info/${item.ids.trakt}`}>
+            <h6>Подробнее</h6>
+          </Link>
           <div className="container_btn">
-            <button>
-              <img src={favoriteImg} alt="favorite_img" />
-            </button>
-            <button>
-              <img src={listDesiredImg} alt="list_desired_img" />
+            <a target="_" href={item.homepage}>
+              <img
+                src="https://img.icons8.com/?size=100&id=VZobQTqqGoaP&format=png&color=000000"
+                alt="list_desired_img"
+              />
+            </a>
+            <button onClick={onFavorite}>
+              <img
+                src={
+                  cookies?.favorite.includes(item.ids.trakt.toString())
+                    ? favoriteRedImg
+                    : favoriteImg
+                }
+                alt="favorite_img"
+              />
             </button>
           </div>
         </div>

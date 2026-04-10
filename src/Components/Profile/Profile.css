@@ -1,0 +1,132 @@
+.container_profile {
+  margin: 0px clamp(10px, 12vw, 300px);
+  .profile {
+    display: flex;
+    flex-direction: column;
+    margin-top: 35px;
+    /* padding: 15px 45px; */
+    border: 1.5px solid rgba(255, 255, 255, 0.111);
+    border-radius: 12px;
+    background-color: rgba(24, 24, 27, 0.619);
+    backdrop-filter: blur(10px);
+    .container_avatar {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      .banner {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border: 1.5px solid rgba(255, 255, 255, 0.111);
+        border-radius: 12px;
+      }
+      .container_avatar {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        .avatar {
+          width: 160px;
+          height: 160px;
+          object-fit: cover;
+          border: 5px solid rgba(65, 65, 65, 0.918);
+          border-radius: 128px;
+          margin: 0px 45px;
+        }
+      }
+    }
+    .container_flex {
+      display: flex;
+    }
+    .container_statistic {
+      width: 100%;
+      padding: 30px 45px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .statistic {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        label {
+          display: flex;
+          flex-direction: column-reverse;
+          gap: 5px;
+          h5 {
+            font-weight: 300;
+          }
+        }
+      }
+    }
+    .container_info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 30px 45px;
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        h6 {
+          color: red;
+        }
+        input {
+          font-size: clamp(13px, 2vw, 20px);
+          font-weight: 500;
+          padding: 5px 15px;
+          border: 1.5px solid rgba(255, 255, 255, 0.111);
+          border-radius: 8px;
+          background-color: rgba(24, 24, 27, 0.619);
+          backdrop-filter: blur(10px);
+        }
+      }
+      .container_done{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        img{
+            width: 20px;
+            object-fit: contain;
+        }
+        h6{
+            color: rgb(0, 255, 4);
+        }
+      }
+      .container_btn {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        button {
+          display: flex;
+          align-items: center;
+          padding: 5px 15px;
+          outline: none;
+          border: none;
+          border-radius: 8px;
+          background-color: rgb(255, 255, 255);
+          border: 1px solid transparent;
+          &:nth-child(1) {
+            border: 1px solid rgba(255, 255, 255, 0.111);
+            backdrop-filter: blur(10px);
+            background-color: rgba(24, 24, 27, 0.619);
+            h5 {
+              color: rgb(110, 110, 110);
+            }
+          }
+          &:nth-child(3) {
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background-color: red;
+            h5 {
+              color: white;
+            }
+          }
+          h5 {
+            text-wrap: nowrap;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}

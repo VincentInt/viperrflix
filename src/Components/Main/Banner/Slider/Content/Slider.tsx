@@ -4,10 +4,10 @@ import rightArrowImg from "../../../../../../public/img/icon/Vector (4).png";
 import LoadIndicator from "../../../../../UI/LoadIndicator/LoadIndicator";
 import { useEffect, useRef, useState } from "react";
 import { onLoadImg } from "../../../../../utils/onLoadImg/onLoadImg.ts";
-import type { OmdbResponse } from "../../../../../utils/type/OmdbType.ts";
+import type { TraktResponse } from "../../../../../utils/type/TraktType.ts";
 
 type propsType = {
-  data: OmdbResponse[];
+  data: TraktResponse[];
   stateSlider: number;
   onChangeClickBtnSlider: (move: number) => any;
 };
@@ -51,15 +51,15 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
     data.forEach((item, index) => {
       onLoadImg(
         () => setDataImgLoadingIndex((prev) => [...prev, index]),
-        item.Poster,
+        `/viperrflix/img/movies/${item?.images?.poster}`,
       );
     });
   }, [data]);
   useEffect(() => {
-    const containerSliderCurrent = containerSliderRef.current;
-    const cardSliderCurrent = cardSliderRef.current;
-
     function calculateGap() {
+      const containerSliderCurrent = containerSliderRef.current;
+      const cardSliderCurrent = cardSliderRef.current;
+
       if (containerSliderCurrent !== null && cardSliderCurrent !== null) {
         const countCard = Math.floor(
           containerSliderCurrent.clientWidth /
@@ -73,6 +73,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
         containerSliderCurrent.style.gap = `${gap}px`;
         const width = containerSliderCurrent.clientWidth / 8 - 25 / 2 / 6;
         const height = width / 0.66;
+
         setSizeCard({
           width: width > 110 ? width : 110,
           height: height > 170 ? height : 170,
@@ -81,7 +82,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
     }
     window.addEventListener("resize", calculateGap);
     calculateGap();
-  }, [data]);
+  }, [data, cardSliderRef.current, containerSliderRef.current]);
 
   const onClickCardSlider = (indexCard: number) => {
     if (stateSlider === indexCard) return;
@@ -95,7 +96,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
           ? {
               marginBottom: `${window.screen.height - window.visualViewport?.height}px`,
             }
-          : {marginBottom: `30px`}
+          : { marginBottom: `30px` }
       }
       className="container_banner_nav"
     >
@@ -109,7 +110,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
       </div>
       <div className="container_window">
         <div ref={containerSliderRef} className="container_state_img_page">
-          {data.map((item: OmdbResponse, index: number) => {
+          {data.map((item: TraktResponse, index: number) => {
             if (containerSliderRef.current === null) return "";
             return (
               <div
@@ -132,7 +133,7 @@ const Slider = ({ data, stateSlider, onChangeClickBtnSlider }: propsType) => {
                           ? `${sizeCard.height}px`
                           : `${sizeCard.height / 1.1}px`,
                     }}
-                    src={item.Poster}
+                    src={`/viperrflix/img/movies/${item?.images?.poster}`}
                     alt="state_img"
                   />
                 ) : (

@@ -29,6 +29,7 @@ input,
 button {
   font-family: "Jost", sans-serif;
   font-optical-sizing: auto;
+  line-height: 140%;
   color: white;
   letter-spacing: 2.3px;
 }

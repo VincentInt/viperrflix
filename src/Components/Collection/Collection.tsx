@@ -1,26 +1,36 @@
 import "./Collection.css";
 import { useParams } from "react-router-dom";
 import CardList from "../../UI/CardList/CardList";
-import type { OmdbResponse } from "../../utils/type/OmdbType";
 import { useEffect, useState, type RefObject } from "react";
 import ShortCard from "../../UI/CardMovies/ShortCard/ShortCard";
+import type { TraktResponse } from "../../utils/type/TraktType";
+
+import dataMovies from "../../utils/data/dataMovies";
 
 type Params = {
-  type: string;
-  sort: string;
+  sort: "trending" | "popular" | "anticipated";
 };
 type StatePage = {
   statusLoad: boolean;
   page: number;
 };
 
+const title = {
+  trending: "Тренды",
+  popular: "Популярное",
+  anticipated: "Скоро выйдет",
+};
+
 const Collection = () => {
+  const params = useParams<Params>();
+  const sort = params.sort;
+
+  const dataJson = dataMovies[sort !== undefined ? sort : "trending"];
+
   const [statePage, setStatePage] = useState<StatePage>({
     statusLoad: false,
     page: 1,
   });
-
-  const params = useParams<Params>();
 
   useEffect(() => {
     function cheackScroll() {
@@ -43,15 +53,17 @@ const Collection = () => {
   return (
     <section className="section_collection">
       <CardList
-        title={`${params.sort}`}
-        paramsUrl={`${params.type}/${params.sort}?limit=20&page=${statePage.page}`}
-        renderCard={(
-          item: OmdbResponse,
-          index: number,
-          ref?: RefObject<HTMLDivElement | null>
-        ) => <ShortCard key={index} item={item} ref={ref} />}
-        setStatePage={setStatePage}
+        title={title[sort !== undefined ? sort : "trending"]}
+        data={dataJson}
+        paramsUrl={"trending"}
+        statePage={statePage.page}
         statusMore={false}
+        setStatePage={setStatePage}
+        renderCard={(
+          item: TraktResponse,
+          index: number,
+          ref?: RefObject<HTMLDivElement | null>,
+        ) => <ShortCard key={index} item={item} ref={ref} />}
       />
     </section>
   );

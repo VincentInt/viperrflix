@@ -1,15 +1,38 @@
 import "./ContentBanner.css";
-import starImg from "../../../../../../public/img/icon/Star 1.png";
-import streamServiceImg from "../../../../../../public/img/image 2.png";
 import favoriteImg from "../../../../../../public/img/icon/Vector (1).png";
-import listImg from "../../../../../../public/img/icon/Vector (2).png";
-import type { OmdbResponse } from "../../../../../utils/type/OmdbType";
+import favoriteRedImg from "../../../../../../public/img/icon/Vector red.png";
+import type { TraktResponse } from "../../../../../utils/type/TraktType";
 import { Link } from "react-router-dom";
+import RatingIndicator from "../../../../../UI/RatingIndicator/RatingIndicator";
+import { useEffect, useState } from "react";
 
 type AnimationMoveType = false | number;
 type propsType = {
-  data: OmdbResponse;
+  data: TraktResponse;
   animationMove: AnimationMoveType;
+};
+type CookieType = {
+  loginStatus: boolean;
+  userLogin: {
+    name: string;
+    login: string;
+    password: string;
+    email: string;
+    date: string;
+  };
+  favorite: string[];
+  countView: number;
+  data: {
+    userLogin: {
+      name: string;
+      login: string;
+      password: string;
+      email: string;
+      date: string;
+    };
+    favorite: string[];
+    countView: number;
+  }[];
 };
 
 const animationStyleElem = "animation_appearance ease-in-out forwards";
@@ -17,6 +40,26 @@ const animationReverseStyleElem =
   "animation_appearance_reverse  ease-in-out forwards";
 
 const ContentBanner = ({ data, animationMove }: propsType) => {
+  const [cookies, setCookies] = useState<CookieType>();
+  useEffect(() => {
+    if (document.cookie.length) {
+      setCookies(JSON.parse(document.cookie.split("userData=")[1]));
+    }
+  }, []);
+  function onFavorite() {
+    if (cookies) {
+      const cookiesClone = JSON.parse(document.cookie.split("userData=")[1]);
+      if (cookiesClone.favorite.includes(data.ids.trakt.toString())) {
+        cookiesClone.favorite = cookiesClone.favorite.filter(
+          (itemFitler: any) => itemFitler !== data.ids.trakt.toString(),
+        );
+      } else {
+        cookiesClone.favorite.push(data.ids.trakt.toString());
+      }
+      document.cookie = `userData=${JSON.stringify(cookiesClone)}; path=/`;
+      setCookies(cookiesClone);
+    }
+  }
   return (
     <div className="container_info_page">
       <div>
@@ -31,7 +74,7 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                 }
           }
         >
-          {data?.Title}
+          {data?.title}
         </h1>
         <div
           className="container_info"
@@ -57,8 +100,14 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                   }
             }
           >
-            <img src={starImg} alt="star_img" />
-            <h3>{data?.imdbRating}</h3>
+            <RatingIndicator
+              rating={data?.rating}
+              styles={{
+                fontSize: "clamp(16px, 2vw, 26px)",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+              }}
+            />
           </div>
           <div className="line"></div>
           <div
@@ -73,7 +122,7 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                   }
             }
           >
-            <h3>{data?.Released}</h3>
+            <h3>{data?.released.split("-").reverse().join(".")}</h3>
           </div>
           <div className="line"></div>
           <div
@@ -88,7 +137,15 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                   }
             }
           >
-            <h3>{data?.Genre}</h3>
+            <h3>
+              {data?.genres.map((item, index) => {
+                if (index === data.genres.length - 1) {
+                  return item + ".";
+                } else {
+                  return item + ", ";
+                }
+              })}
+            </h3>
           </div>
         </div>
         <p
@@ -103,7 +160,7 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
                 }
           }
         >
-          {data?.Plot}
+          {data?.overview}
         </p>
       </div>
       <div
@@ -118,23 +175,27 @@ const ContentBanner = ({ data, animationMove }: propsType) => {
               }
         }
       >
-        <Link to={`info/movies/${data?.imdbID}`}>
+        <Link to={`info/${data?.ids.trakt}`}>
           <h5>Подробнее</h5>
         </Link>
-        <button>
-          <h5>Трансляция</h5>
-          <img
-            className="img_stream_service"
-            src={streamServiceImg}
-            alt="stream_service_img"
-          />
-        </button>
+        {data?.homepage ? (
+          <a target="_" href={data.homepage}>
+            <h5>Сайт фильма</h5>
+          </a>
+        ) : (
+          ""
+        )}
+
         <div className="container_small_btn">
-          <button>
-            <img src={favoriteImg} alt="favorite_img_btn" />
-          </button>
-          <button>
-            <img src={listImg} alt="list_img_btn" />
+          <button onClick={onFavorite}>
+            <img
+              src={
+                cookies?.favorite.includes(data.ids.trakt.toString())
+                  ? favoriteRedImg
+                  : favoriteImg
+              }
+              alt="favorite_img_btn"
+            />
           </button>
         </div>
       </div>

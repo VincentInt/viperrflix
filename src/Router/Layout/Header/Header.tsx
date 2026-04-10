@@ -5,11 +5,20 @@ import imgBurgerMenuIcon from "../../../../public/img/icon/icons8-гамбург
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 
+type CookiesType = {
+  loginStatus: boolean;
+  userLogin: { login: string; password: string };
+  data: { login: string; password: string }[];
+};
+
 const Header = () => {
   const [statusBurger, setStatusBurger] = useState<boolean | null>(null);
   const [inputSearch, setInputSearch] = useState<string>("");
+  const [login, setLogin] = useState<string>("");
+
   const headerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
   window.addEventListener("resize", () => {
     if (window.innerWidth > 580) {
       setStatusBurger(null);
@@ -67,21 +76,45 @@ const Header = () => {
       return !prev;
     });
   }
+  useEffect(() => {
+    if (document.cookie.length > 0) {
+      const cookie = JSON.parse(
+        document.cookie.split("userData=")[1],
+      ) as CookiesType;
+      if (cookie.loginStatus) {
+        setLogin(cookie.userLogin.login);
+      } else {
+        setLogin("");
+      }
+    }
+  }, [document.cookie]);
   return (
     <header ref={headerRef}>
       <div
         className={`content_header ${statusBurger ? "open_content" : "close_content"}`}
       >
         <Link to={"/"}>
-          <h2>ViperFlix</h2>
+          <h2>АЛАТРА.ТВ</h2>
         </Link>
         <nav className="container_header_nav">
-          <Link to={"/collection/movies/trending"}>
-            <h5>Фильмы</h5>
+          <Link to={"/"}>
+            <h5>Главная</h5>
           </Link>
-          <Link to={"/collection/shows/trending"}>
-            <h5>Сериалы</h5>
+          <Link to={"/compilation"}>
+            <h5>Подборка</h5>
           </Link>
+          <Link to={"/favorite"}>
+            <h5>Избранное</h5>
+          </Link>
+          {login.length ? (
+            <Link to={"/profile"}>
+              <h5>{login}</h5>
+            </Link>
+          ) : (
+            <Link to={"/login"}>
+              <h5>Войти</h5>
+            </Link>
+          )}
           <div className="container_input_search">
             <input
               value={inputSearch}

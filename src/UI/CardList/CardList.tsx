@@ -1,12 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
-import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
-import { fetchTrakt } from "../../utils/fetch/fetchTrakt";
-import type { OmdbResponse } from "../../utils/type/OmdbType";
-import type {
-  TraktReadMoreResponse,
-  TraktResponse,
-} from "../../utils/type/TraktType";
+import { Link } from "react-router-dom";
+import type { TraktResponse } from "../../utils/type/TraktType";
 import LoadingShortCard from "../CardMovies/LoadingShortCard/LoadingShortCard";
+import cryImg from "../../../public/img/crying-sad.gif";
 import "./CardList.css";
 import {
   useEffect,
@@ -24,85 +19,46 @@ type StatePage = {
 };
 type Props = {
   title: string;
+  data: TraktResponse[];
   paramsUrl: string;
   statusMore?: boolean;
+  statusClear?: boolean;
   renderCard: (
-    item: OmdbResponse,
+    item: TraktResponse,
     index: number,
     ref?: RefObject<HTMLDivElement | null>,
   ) => ReactNode;
   setStatePage?: Dispatch<SetStateAction<StatePage>>;
+  statePage?: number;
 };
 const CardList = ({
   title,
+  data,
   paramsUrl,
   statusMore = true,
   renderCard,
+  statusClear = false,
   setStatePage,
+  statePage,
 }: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
-  const [dataCardsOmdb, setDataCardsOmdb] = useState<OmdbResponse[]>([]);
-  const [paramsTypeCard, setParamsTypeCard] = useState<string>("");
+  const [stateLoadPage, setStateLoadPage] = useState<number>(1);
 
-  const location = useLocation();
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (paramsUrl.split("/")[0] !== paramsTypeCard.split("/")[0]) {
-      setDataCardsTrakt([]);
-      setDataCardsOmdb([]);
-    }
-    setParamsTypeCard(paramsUrl);
-  }, [paramsUrl]);
+    setTimeout(() => {
+      setDataCardsTrakt([...data]);
+    }, 5000);
+  }, [data]);
 
   useEffect(() => {
-    if (paramsTypeCard.length !== 0) {
-      if (!paramsTypeCard.includes("popular")) {
-        fetchTrakt<TraktReadMoreResponse>(
-          paramsTypeCard,
-          (json: TraktReadMoreResponse[]) =>
-            setDataCardsTrakt(() => {
-              if (json.length === 0) return [];
-
-              const firstItem = json[0];
-              if (firstItem !== undefined) {
-                if ("movie" in firstItem) {
-                  return json.map((item) => item.movie) as TraktResponse[];
-                } else if ("show" in firstItem) {
-                  return json.map((item) => item.show) as TraktResponse[];
-                }
-                return [];
-              } else {
-                return [];
-              }
-            }),
-        );
-      } else {
-        fetchTrakt<TraktResponse>(paramsTypeCard, (json: TraktResponse[]) =>
-          setDataCardsTrakt(json),
-        );
-      }
+    if (statePage !== undefined && setStatePage !== undefined) {
+      setStateLoadPage(statePage);
+      setStatePage((prev) => ({ ...prev, statusLoad: false }));
     }
-  }, [paramsTypeCard]);
+  }, [statePage]);
 
-  useEffect(() => {
-    if (dataCardsTrakt.length !== 0) {
-      dataCardsTrakt.forEach((item: TraktResponse) => {
-        fetchOmdb<OmdbResponse>(`&i=${item.ids.imdb}`, (json: OmdbResponse) => {
-          if (
-            location.pathname.includes("collection") &&
-            setStatePage !== undefined
-          ) {
-            setStatePage((prev: StatePage) => ({
-              ...prev,
-              statusLoad: false,
-            }));
-          }
-          setDataCardsOmdb((prev) => [...prev, json]);
-        });
-      });
-    }
-  }, [dataCardsTrakt]);
   return (
     <section className="section_card_list">
       <div className="container_card_list">
@@ -116,28 +72,29 @@ const CardList = ({
             ""
           )}
         </div>
-        <div className="container_cards">
-          {dataCardsOmdb.length > 0
-            ? dataCardsOmdb.map((item: OmdbResponse, index: number) => {
-                const ref = index === 0 ? cardRef : undefined;
-                return (
-                  <Link
-                    key={index}
-                    to={`/info/${paramsTypeCard.split("/")[0]}/${
-                      dataCardsTrakt.filter(
-                        (itemFilter) => itemFilter.ids.imdb === item.imdbID,
-                      )[0].ids?.trakt
-                    }`}
-                  >
-                    {renderCard(item, index, ref)}
-                  </Link>
-                );
-              })
-            : [...Array(10)].map((_, index) => {
-                const ref = index === 0 ? cardRef : undefined;
-                return <LoadingShortCard key={index} ref={ref} />;
-              })}
-        </div>
+        {statusClear ? (
+          <div className="container_clear">
+            <h2>Нечего подходящего не нашлось(</h2>
+            <img src={cryImg} alt="" />
+          </div>
+        ) : (
+          <div className="container_cards">
+            {dataCardsTrakt.length > 0
+              ? dataCardsTrakt
+                  .slice(0, stateLoadPage * 20)
+                  .map((item: TraktResponse, index: number) => {
+                    const ref = index === 0 ? cardRef : undefined;
+
+                    return (
+                      <div key={index}>{renderCard(item, index, ref)}</div>
+                    );
+                  })
+              : [...Array(20)].map((_, index) => {
+                  const ref = index === 0 ? cardRef : undefined;
+                  return <LoadingShortCard key={index} ref={ref} />;
+                })}
+          </div>
+        )}
       </div>
     </section>
   );

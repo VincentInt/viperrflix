@@ -2,10 +2,9 @@ import "./Banner.css";
 import ContentLoadingSlider from "./Slider/ContentLoaderSlider";
 import ContentLoaderBanner from "./ContentBanner/ContentLoaderContentBanner";
 import { useEffect, useState } from "react";
-import type { OmdbResponse } from "../../../utils/type/OmdbType";
 import type { TraktResponse } from "../../../utils/type/TraktType";
-import { fetchOmdb } from "../../../utils/fetch/fetchOmdb";
-import { fetchTrakt } from "../../../utils/fetch/fetchTrakt";
+
+import dataMovies from "../../../utils/data/dataMovies";
 
 const animationStyleElem = "animation_appearance ease-in-out forwards";
 const animationReverseStyleElem =
@@ -15,25 +14,15 @@ const Banner = () => {
   const [dataPopularMovies, setDataPopularMovies] = useState<TraktResponse[]>(
     [],
   );
-  const [dataBanner, setDataBanner] = useState<OmdbResponse[]>([]);
   const [stateSlider, setStateSlider] = useState<number>(0);
   const [animationMove, setAnimationMove] = useState<false | number>(false);
   const [moveStatus, setMoveStatus] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchTrakt("movies/popular", (json: TraktResponse[]) =>
-      setDataPopularMovies(json),
-    );
+    setTimeout(() => {
+      setDataPopularMovies(dataMovies.trending.slice(0, 10));
+    }, 5000);
   }, []);
-  useEffect(() => {
-    if (dataPopularMovies.length !== 0) {
-      dataPopularMovies.forEach((item: TraktResponse) => {
-        fetchOmdb(`&i=${item.ids.imdb}`, (json: OmdbResponse) =>
-          setDataBanner((prev) => [...prev, json]),
-        );
-      });
-    }
-  }, [dataPopularMovies]);
   useEffect(() => {
     if (typeof animationMove === "number") {
       setTimeout(() => {
@@ -54,7 +43,7 @@ const Banner = () => {
   }
   function onMoveSlider(move: number) {
     const indexMove = stateSlider + move;
-    const dataBannerLength = dataBanner.length - 1;
+    const dataBannerLength = dataPopularMovies.length - 1;
 
     if (indexMove > dataBannerLength) {
       setStateSlider(0);
@@ -75,10 +64,10 @@ const Banner = () => {
         className="container_img_page"
       >
         <div className="vignette"></div>
-        {dataBanner.length ? (
+        {dataPopularMovies.length ? (
           <img
             className="page_img"
-            src={dataBanner[stateSlider]?.Poster}
+            src={`/viperrflix/img/movies/${dataPopularMovies[stateSlider]?.images.fanart}`}
             alt="background_img"
           />
         ) : (
@@ -89,10 +78,10 @@ const Banner = () => {
         <div className="content">
           <ContentLoaderBanner
             animationMove={animationMove}
-            data={dataBanner[stateSlider]}
+            data={dataPopularMovies[stateSlider]}
           />
           <ContentLoadingSlider
-            data={dataBanner}
+            data={dataPopularMovies}
             stateSlider={stateSlider}
             onChangeClickBtnSlider={onChangeClickBtnSlider}
           />

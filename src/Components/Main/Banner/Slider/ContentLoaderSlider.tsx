@@ -1,9 +1,9 @@
 import Slider from "./Content/Slider";
 import LoadingSlider from "./LoadingSlider/LoadingSlider";
-import type { OmdbResponse } from "../../../../utils/type/OmdbType";
+import type { TraktResponse } from "../../../../utils/type/TraktType";
 
 type propsType = {
-  data: OmdbResponse[];
+  data: TraktResponse[];
   stateSlider: number;
   onChangeClickBtnSlider: (move: number) => any;
 };
@@ -13,6 +13,7 @@ const ContentLoadingSlider = ({
   stateSlider,
   onChangeClickBtnSlider,
 }: propsType) => {
+
   return (
     <>
       {data.length ? (

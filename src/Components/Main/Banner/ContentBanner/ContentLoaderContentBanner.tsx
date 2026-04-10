@@ -1,10 +1,10 @@
 import LoadingContentBanner from "./LoadingContentBanner/LoadingContentBanner";
 import ContentBanner from "./Content/ContentBanner";
-import type { OmdbResponse } from "../../../../utils/type/OmdbType";
+import type {TraktResponse } from "../../../../utils/type/TraktType";
 
 type AnimationMoveType = false | number;
 type propsType = {
-  data: OmdbResponse;
+  data: TraktResponse;
   animationMove: AnimationMoveType;
 };
 const ContentLoaderBanner = ({ data, animationMove }: propsType) => {

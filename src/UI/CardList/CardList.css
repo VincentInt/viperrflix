@@ -17,6 +17,20 @@
         backdrop-filter: blur(10px);
       }
     }
+    .container_clear {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      gap: 30px;
+      img {
+        width: 250px;
+        object-fit: contain;
+        border: 1.5px solid rgba(255, 255, 255, 0.111);
+        border-radius: 12px;
+      }
+    }
     .container_cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

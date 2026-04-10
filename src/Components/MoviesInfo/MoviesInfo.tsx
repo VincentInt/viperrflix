@@ -1,160 +1,207 @@
 import { useParams } from "react-router-dom";
-import errorCardImg from "../../../public/img/izobr.-otsutst-scaled.jpg";
 import RatingIndicator from "../../UI/RatingIndicator/RatingIndicator";
-import type { OmdbResponse } from "../../utils/type/OmdbType";
 import "./MoviesInfo.css";
 import { useEffect, useState } from "react";
-import { fetchOmdb } from "../../utils/fetch/fetchOmdb";
-import { onLoadImg } from "../../utils/onLoadImg/onLoadImg";
-import LoadIndicator from "../../UI/LoadIndicator/LoadIndicator";
-import { fetchTraktItem } from "../../utils/fetch/fetchTrakt";
-import type {
-  TraktPeopleResponse,
-  TraktResponse,
-} from "../../utils/type/TraktType";
-import { fetchTvmaze } from "../../utils/fetch/fetchTvmaze";
+import type { TraktResponse } from "../../utils/type/TraktType";
 
-type StatusImg = "load" | "done" | "error";
-type TvmazeType = {
-  person: {
+import favoriteImg from "../../../public/img/icon/Vector (1).png";
+import favoriteRedImg from "../../../public/img/icon/Vector red.png";
+
+import dataMovies from "../../utils/data/dataMovies";
+
+type CookieType = {
+  loginStatus: boolean;
+  userLogin: {
     name: string;
-    country: {
-      name: string;
-      code: string;
-      timezone: string;
-    };
-    birthday: string;
-    image: {
-      medium: string;
-      original: string;
-    };
+    login: string;
+    password: string;
+    email: string;
+    date: string;
   };
+  favorite: string[];
+  countView: number;
+  data: {
+    userLogin: {
+      name: string;
+      login: string;
+      password: string;
+      email: string;
+      date: string;
+    };
+    favorite: string[];
+    countView: number;
+  }[];
+};
+
+const ageRating = {
+  G: "0+",
+  PG: "6+",
+  "PG-13": "13+",
+  R: "17+",
+  "NC-17": "18+",
 };
 
 const MoviesInfo = () => {
-  const [dataCardTrakt, setdataCardTrakt] = useState<TraktResponse>();
-  const [dataCardOmd, setDataCardOmd] = useState<OmdbResponse>();
+  const dataJson = [
+    ...dataMovies.trending,
+    ...dataMovies.popular,
+    ...dataMovies.anticipated,
+  ].filter(
+    (item, index, self) =>
+      index === self.findIndex((i) => i?.ids.trakt === item?.ids.trakt),
+  ) as TraktResponse[];
 
-  const [dataPeopleTrakt, setDataPeopleTrakt] = useState<TraktPeopleResponse>();
-  const [dataPeopleTvmaze, setDataPeopleTvmaze] = useState<TvmazeType[]>([]);
+  const [dataCardTrakt, setDataCardTrakt] = useState<TraktResponse>();
+  const [cookies, setCookies] = useState<CookieType>();
 
-  const [loadImg, setLoadImg] = useState<StatusImg>("load");
-
-  const params = useParams<{ id: string; type: string }>();
+  const params = useParams<{ id: string }>();
+  const id = params.id;
 
   useEffect(() => {
-    if (params.id?.length && params.type?.length) {
-      fetchTraktItem<TraktResponse>(
-        `${params.type}/${params.id}`,
-        (json: TraktResponse) => {
-          setdataCardTrakt(json);
-        },
+    if (id?.length && id) {
+      const cookie: CookieType = JSON.parse(
+        document.cookie.split("userData=")[1],
       );
-      fetchTraktItem<TraktPeopleResponse>(
-        `${params.type}/${params.id}/people`,
-        (json: TraktPeopleResponse) => {
-          setDataPeopleTrakt(json);
-        },
-      );
+      cookie.countView += 1;
+      document.cookie = `userData=${JSON.stringify(cookie)}; path=/`;
+      setDataCardTrakt(dataJson.filter((item) => item?.ids?.trakt === +id)[0]);
     }
   }, [params]);
-
   useEffect(() => {
-    if (dataCardTrakt) {
-      fetchOmdb<OmdbResponse>(
-        `&i=${dataCardTrakt.ids.imdb}`,
-        (json: OmdbResponse) => {
-          setDataCardOmd(json);
-        },
-      );
+    if (document.cookie.length) {
+      setCookies(JSON.parse(document.cookie.split("userData=")[1]));
     }
-  }, [dataCardTrakt]);
+  }, []);
 
-  useEffect(() => {
-    const array: TvmazeType[] = [];
-
-    dataPeopleTrakt?.cast.forEach((item) => {
-      fetchTvmaze<TvmazeType>(
-        `search/people?q=${item.person.name}`,
-        (json: TvmazeType[]) => {
-          if (json[0]?.person?.image?.original) {
-            array.push(json[0]);
-          }
-        },
-      );
-    });
-
-    setDataPeopleTvmaze(array);
-  }, [dataPeopleTrakt]);
-
-  useEffect(() => {
-    if (dataCardOmd !== undefined) {
-      onLoadImg(
-        (status) => setLoadImg(() => (status ? "done" : "error")),
-        dataCardOmd.Poster,
-      );
+  function onFavorite() {
+    if (cookies && dataCardTrakt) {
+      const cookiesClone = JSON.parse(document.cookie.split("userData=")[1]);
+      if (cookiesClone.favorite.includes(dataCardTrakt.ids.trakt.toString())) {
+        cookiesClone.favorite = cookiesClone.favorite.filter(
+          (itemFitler: any) =>
+            itemFitler !== dataCardTrakt.ids.trakt.toString(),
+        );
+      } else {
+        cookiesClone.favorite.push(dataCardTrakt.ids.trakt.toString());
+      }
+      document.cookie = `userData=${JSON.stringify(cookiesClone)}; path=/`;
+      setCookies(cookiesClone);
     }
-  }, [dataCardOmd]);
+  }
+
   return (
     <section className="section_movies_info">
-      {dataCardOmd ? (
+      {dataCardTrakt ? (
         <div className="main_container_info">
-          {loadImg === "load" ? <LoadIndicator /> : ""}
-          {loadImg === "done" ? (
+          <div className="container_img">
             <img
               className="img_poster"
-              src={dataCardOmd.Poster}
+              src={`/viperrflix/img/movies/${dataCardTrakt.images.poster}`}
               alt="card_img"
             />
-          ) : (
-            ""
-          )}
-          {loadImg === "error" ? (
-            <img
-              className="img_poster"
-              src={errorCardImg}
-              alt="error_card_img"
-            />
-          ) : (
-            ""
-          )}
-          <div className="container_info">
-            <h2 className="title">{`${dataCardOmd.Title} (${dataCardOmd.Year})`}</h2>
-            <div className="container_flex_info">
-              <RatingIndicator item={dataCardOmd} />
-              <h5>{dataCardOmd.Language}</h5>
-              <h5>{dataCardOmd.Runtime}</h5>
-            </div>
-            <div className="container_text_info">
-              <h5>About the movie:</h5>
-              <h5>Rated: +{dataCardOmd.Rated}</h5>
-              <h5>Released: {dataCardOmd.Released}</h5>
-              <h5>Country: {dataCardOmd.Country}</h5>
-              <h5>Genre: {dataCardOmd.Genre}</h5>
-              <h5>Director: {dataCardOmd.Director}</h5>
-              <h5>Writer: {dataCardOmd.Writer}</h5>
-              <h5>BoxOffice: {dataCardOmd.BoxOffice}</h5>{" "}
-              <h5 className="title_actors">Actors: {dataCardOmd.Actors}</h5>
-              {dataPeopleTvmaze.length ? (
-                <div className="container_actors">
-                  {dataPeopleTvmaze?.map((item: TvmazeType, index: number) => {
-                    return (
-                      <div key={index} className="actors_card">
-                        <img
-                          src={item?.person?.image?.original}
-                          alt="actors_img"
-                        />
-                        <h5>{item.person.name}</h5>
-                        <h6>{item.person.country?.timezone}</h6>
-                        <h6>{item.person.birthday}</h6>
-                      </div>
-                    );
-                  })}
-                </div>
+            <div>
+              {dataCardTrakt.trailer ? (
+                <>
+                  <h6>Трейлер</h6>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${dataCardTrakt.trailer.split("watch?v=")[1]}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </>
               ) : (
                 ""
               )}
-              <p>{dataCardOmd.Plot}</p>
+            </div>
+          </div>
+          <div className="container_info">
+            <div className="container_flex_title">
+              <div className="container_title">
+                {dataCardTrakt?.images?.logo?.length ? (
+                  <img
+                    src={`/viperrflix/img/movies/${dataCardTrakt.images.logo}`}
+                    alt=""
+                  />
+                ) : (
+                  <h2 className="title">{dataCardTrakt.title}</h2>
+                )}
+                <div className="container_btn">
+                  <button onClick={onFavorite}>
+                    <img
+                      src={
+                        cookies?.favorite.includes(
+                          dataCardTrakt.ids.trakt.toString(),
+                        )
+                          ? favoriteRedImg
+                          : favoriteImg
+                      }
+                      alt="favorite_btn_img"
+                    />
+                    <h5>Избранное</h5>
+                  </button>
+                  <button>
+                    <img
+                      src="https://img.icons8.com/?size=100&id=VZobQTqqGoaP&format=png&color=000000"
+                      alt="stream_btn_img"
+                    />
+                    <h5>Сайт фильма</h5>
+                  </button>
+                </div>
+              </div>
+              <div className="container_title">
+                <RatingIndicator
+                  styles={{
+                    fontSize: "clamp(18px, 2vw, 28px)",
+                    paddingLeft: "15px",
+                    paddingRight: "15px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
+                  rating={dataCardTrakt.rating}
+                />
+                <h6>{Intl.NumberFormat().format(dataCardTrakt.votes)}</h6>
+              </div>
+            </div>
+            <div className="container_text_info">
+              <h3>О фильме</h3>
+              <h5>
+                <span>Год производства:</span>
+                {dataCardTrakt.released.split("-").reverse().join(".")}г
+              </h5>
+              <h5>
+                <span>Страна:</span>
+                {dataCardTrakt.country.toLocaleUpperCase()}
+              </h5>
+              <h5>
+                <span>Возрасной рейтинг:</span>
+                {ageRating[
+                  dataCardTrakt.certification as keyof typeof ageRating
+                ] ?? "—"}
+              </h5>
+              <h5>
+                <span>Жанры:</span>
+                {dataCardTrakt.genres.join(", ")}
+              </h5>
+              <h5>
+                <span>Время фильма:</span>
+                {Math.floor((+dataCardTrakt.runtime / 60) * 10) / 10}ч
+              </h5>
+              <div className="container_overview">
+                <h3>Сюжет</h3>
+                <p>{dataCardTrakt.overview}</p>
+              </div>
+            </div>
+            <div className="container_gallery">
+              <h3>Фанарт</h3>
+              <div className="container_img">
+                <img
+                  src={`/viperrflix/img/movies/${dataCardTrakt.images.fanart}`}
+                  alt=""
+                />
+              </div>
             </div>
           </div>
         </div>

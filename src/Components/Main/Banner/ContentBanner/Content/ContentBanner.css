@@ -2,6 +2,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
+
   .info_source_btn {
   }
   .info_page {
@@ -23,7 +24,6 @@
       h3 {
         text-transform: capitalize;
         overflow: hidden;
-        white-space: nowrap;
         text-overflow: ellipsis;
         &::after {
           content: ",";
