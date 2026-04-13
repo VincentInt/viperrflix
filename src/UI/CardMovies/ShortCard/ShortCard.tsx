@@ -15,29 +15,6 @@ import type { TraktResponse } from "../../../utils/type/TraktType";
 import RatingIndicator from "../../RatingIndicator/RatingIndicator";
 import { Link } from "react-router-dom";
 
-type CookiesType = {
-  loginStatus: boolean;
-  userLogin: {
-    name: string;
-    login: string;
-    password: string;
-    email: string;
-    date: string;
-  };
-  favorite: string[];
-  countView: number;
-  data: {
-    userLogin: {
-      name: string;
-      login: string;
-      password: string;
-      email: string;
-      date: string;
-    };
-    favorite: string[];
-    countView: number;
-  }[];
-};
 type Props = {
   item: TraktResponse;
   setCookiesProps?: Dispatch<SetStateAction<CookieType | undefined>>;

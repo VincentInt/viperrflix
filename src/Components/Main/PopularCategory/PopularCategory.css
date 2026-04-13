@@ -20,9 +20,11 @@
       aspect-ratio: 16/17;
       border-radius: 16px;
       transition: all 0.3s ease;
-      &:hover {
-        transform: scale(103%);
-        box-shadow: 0px 5px 45px 25px rgba(255, 255, 255, 0.151);
+      @media (hover: hover) {
+        &:hover {
+          transform: scale(103%);
+          box-shadow: 0px 5px 45px 25px rgba(255, 255, 255, 0.151);
+        }
       }
       .text_card {
         position: relative;
