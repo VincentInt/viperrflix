@@ -11,6 +11,7 @@ import LoginPage from "../Page/LoginPage";
 import RegistrPage from "../Page/RegistrPage";
 import { useEffect } from "react";
 import ProfilePage from "../Page/ProfilePage";
+import NotFoundPage from "../Page/NotFoundPage";
 
 type CookiesType = {
   loginStatus: boolean;
@@ -50,9 +51,6 @@ const Routers = () => {
     }
   }, []);
   return (
-    //Сделать адаптив профиле
-    //сделать медленную загрузку для всех страниц
-    //популярные категории сделать мешьне задержку
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -72,6 +70,7 @@ const Routers = () => {
           <Route path="login/" element={<LoginPage />} />
           <Route path="registr/" element={<RegistrPage />} />
           <Route path="profile/" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

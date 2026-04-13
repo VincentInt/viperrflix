@@ -71,6 +71,7 @@ const MoviesInfo = () => {
     if (document.cookie.length) {
       setCookies(JSON.parse(document.cookie.split("userData=")[1]));
     }
+    window.scrollTo(0, 0);
   }, []);
 
   function onFavorite() {
@@ -140,7 +141,9 @@ const MoviesInfo = () => {
                   }}
                   rating={dataCardTrakt.rating}
                 />
-                <h6 className="count">{Intl.NumberFormat().format(dataCardTrakt.votes)}</h6>
+                <h6 className="count">
+                  {Intl.NumberFormat().format(dataCardTrakt.votes)}
+                </h6>
               </div>
             </div>
             <div className="container_btn">
@@ -194,15 +197,19 @@ const MoviesInfo = () => {
                 <p>{dataCardTrakt.overview}</p>
               </div>
             </div>
-            <div className="container_gallery">
-              <h3>Фанарт</h3>
-              <div className="container_img">
-                <img
-                  src={`/viperrflix/img/movies/${dataCardTrakt.images.fanart}`}
-                  alt=""
-                />
+            {dataCardTrakt.images.fanart?.length ? (
+              <div className="container_gallery">
+                <h3>Фанарт</h3>
+                <div className="container_img">
+                  <img
+                    src={`/viperrflix/img/movies/${dataCardTrakt.images.fanart}`}
+                    alt=""
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       ) : (

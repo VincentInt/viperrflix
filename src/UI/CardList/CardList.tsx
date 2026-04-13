@@ -3,6 +3,7 @@ import type { TraktResponse } from "../../utils/type/TraktType";
 import LoadingShortCard from "../CardMovies/LoadingShortCard/LoadingShortCard";
 import cryImg from "../../../public/img/crying-sad.gif";
 import favoriteImg from "../../../public/img/victoria.gif";
+import notFoundImg from "../../../public/img/anime-girl.gif"
 
 import "./CardList.css";
 import {
@@ -24,6 +25,7 @@ type Props = {
   data: TraktResponse[];
   paramsUrl: string;
   statusMore?: boolean;
+  statusNotFound?: boolean;
   statusClear?: boolean;
   statusClearFavorite?: boolean;
   renderCard: (
@@ -44,6 +46,7 @@ const CardList = ({
   statusClearFavorite = false,
   setStatePage,
   statePage,
+  statusNotFound = false,
 }: Props) => {
   const [dataCardsTrakt, setDataCardsTrakt] = useState<TraktResponse[]>([]);
   const [stateLoadPage, setStateLoadPage] = useState<number>(1);
@@ -76,9 +79,15 @@ const CardList = ({
             ""
           )}
         </div>
-        {statusClear ? (
+
+        {statusNotFound ? (
           <div className="container_clear">
-            <h2>Нечего подходящего не нашлось(</h2>
+            <h2>Страница не найдена</h2>
+            <img src={notFoundImg} alt="cry_img" />
+          </div>
+        ) : statusClear ? (
+          <div className="container_clear">
+            <h2>Нечего подходящего не нашлось</h2>
             <img src={cryImg} alt="cry_img" />
           </div>
         ) : statusClearFavorite ? (
