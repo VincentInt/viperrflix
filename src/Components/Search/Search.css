@@ -1,6 +1,0 @@
-.section_search {
-  padding-top: clamp(100px, 25vw, 150px);
-  .section_card_list {
-    padding: 0;
-  }
-}
