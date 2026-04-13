@@ -1,7 +1,5 @@
 .container_banner {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.662);
   .container_blur_transition {
     z-index: 2;
@@ -48,6 +46,8 @@
     position: relative;
     z-index: 4;
     height: 100vh;
+    min-height: fit-content;
+
     .content {
       display: flex;
       flex-direction: column;
@@ -64,6 +64,7 @@
           padding: 0px clamp(5px, 1.5vw, 15px);
           img {
             width: clamp(20px, 4vw, 23px);
+            object-fit: contain;
           }
         }
       }

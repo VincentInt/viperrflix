@@ -8,9 +8,10 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
     margin: 0px clamp(10px, 12vw, 300px);
     margin-top: 35px;
-    padding: 15px 45px;
+    padding: 15px clamp(15px, 4vw, 45px);
     border: 1.5px solid rgba(255, 255, 255, 0.111);
     border-radius: 12px;
     background-color: rgba(24, 24, 27, 0.619);
@@ -20,14 +21,18 @@ header {
   .container_burger_nav {
     display: flex;
     align-items: center;
-    gap: clamp(20px, 2.5vw, 45px);
+    gap: clamp(10px, 2vw, 45px);
+    h5 {
+      font-size: clamp(13px, 1.5vw, 20px);
+    }
     .container_input_search {
       position: relative;
       display: flex;
       align-items: center;
+
       input {
         font-size: 16px;
-        width: clamp(100px, 20vw, 180px);
+        width: clamp(100px, 10vw, 180px);
         padding: 8px 20px;
         outline: none;
         border: 1.5px solid rgba(255, 255, 255, 0.101);
@@ -143,14 +148,6 @@ header {
         }
       }
     }
-  }
-}
-@media (max-width: 580px) {
-  header {
-    .content_header {
-      margin: 0px 10px;
-      margin-top: 10px;
-    }
     .container_header_nav {
       display: none;
     }
@@ -159,6 +156,14 @@ header {
     }
     .container_burger_menu {
       display: flex;
+    }
+  }
+}
+@media (max-width: 580px) {
+  header {
+    .content_header {
+      margin: 0px 10px;
+      margin-top: 10px;
     }
   }
 }

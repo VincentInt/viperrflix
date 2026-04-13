@@ -1,7 +1,7 @@
 .section_popular_category {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 25px;
   margin: 0px clamp(10px, 12vw, 300px);
   margin-top: clamp(50px, 12vw, 150px);
   .container_card_popular_category {
@@ -47,13 +47,15 @@
         object-fit: cover;
       }
     }
+
     .loading {
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1.5px solid rgba(255, 255, 255, 0.22);
       border-radius: 12px;
-      background-color: rgba(24, 24, 27, 0.619);
+      background-color: rgb(51, 51, 51);
+      border: 1.5px solid rgba(255, 255, 255, 0.091);
       backdrop-filter: blur(10px);
       &:hover {
         transform: scale(100%);
@@ -82,7 +84,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       .card_popular_category {
-        aspect-ratio: 10/6;
+        aspect-ratio: 10/10;
       }
     }
   }

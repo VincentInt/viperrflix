@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useEffect, useState, type ChangeEvent } from "react";
 
@@ -39,6 +39,8 @@ const Login = () => {
     login: "",
     password: "",
   });
+  
+  const navigate = useNavigate()
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
@@ -62,7 +64,7 @@ const Login = () => {
         setFormError((prev) => ({ ...prev, password: "" }));
 
         cookie.loginStatus = true;
-        cookie.userLogin = user[0].userLogin
+        cookie.userLogin = user[0].userLogin;
 
         document.cookie = `userData=${JSON.stringify(cookie)}; path=/`;
       } else {
@@ -75,6 +77,14 @@ const Login = () => {
       setFormError((prev) => ({ ...prev, login: "Неправильный логин" }));
     }
   }
+  useEffect(() => {
+    const cookie = JSON.parse(
+      document.cookie.split("userData=")[1],
+    ) as CookiesType;
+    if (cookie.loginStatus) {
+      navigate("/profile")
+    }
+  }, []);
   return (
     <section className="section_form">
       <form action="">

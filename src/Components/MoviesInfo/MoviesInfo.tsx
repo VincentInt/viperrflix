@@ -100,7 +100,7 @@ const MoviesInfo = () => {
               alt="card_img"
             />
             <div>
-              {dataCardTrakt.trailer ? (
+              {/* {dataCardTrakt.trailer ? (
                 <>
                   <h6>Трейлер</h6>
                   <iframe
@@ -114,7 +114,7 @@ const MoviesInfo = () => {
                 </>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
           </div>
           <div className="container_info">
@@ -128,42 +128,42 @@ const MoviesInfo = () => {
                 ) : (
                   <h2 className="title">{dataCardTrakt.title}</h2>
                 )}
-                <div className="container_btn">
-                  <button onClick={onFavorite}>
-                    <img
-                      src={
-                        cookies?.favorite.includes(
-                          dataCardTrakt.ids.trakt.toString(),
-                        )
-                          ? favoriteRedImg
-                          : favoriteImg
-                      }
-                      alt="favorite_btn_img"
-                    />
-                    <h5>Избранное</h5>
-                  </button>
-                  <button>
-                    <img
-                      src="https://img.icons8.com/?size=100&id=VZobQTqqGoaP&format=png&color=000000"
-                      alt="stream_btn_img"
-                    />
-                    <h5>Сайт фильма</h5>
-                  </button>
-                </div>
               </div>
-              <div className="container_title">
+              <div className="container_title rating">
                 <RatingIndicator
                   styles={{
-                    fontSize: "clamp(18px, 2vw, 28px)",
-                    paddingLeft: "15px",
-                    paddingRight: "15px",
-                    paddingTop: "5px",
-                    paddingBottom: "5px",
+                    fontSize: "clamp(16px, 2vw, 28px)",
+                    paddingLeft: "clamp(5px, 2vw, 15px)",
+                    paddingRight: "clamp(5px, 2vw, 15px)",
+                    paddingTop: "clamp(2px, 1.2vw, 5px)",
+                    paddingBottom: "clamp(2px, 1.2vw, 5px)",
                   }}
                   rating={dataCardTrakt.rating}
                 />
-                <h6>{Intl.NumberFormat().format(dataCardTrakt.votes)}</h6>
+                <h6 className="count">{Intl.NumberFormat().format(dataCardTrakt.votes)}</h6>
               </div>
+            </div>
+            <div className="container_btn">
+              <button onClick={onFavorite}>
+                <img
+                  src={
+                    cookies?.favorite.includes(
+                      dataCardTrakt.ids.trakt.toString(),
+                    )
+                      ? favoriteRedImg
+                      : favoriteImg
+                  }
+                  alt="favorite_btn_img"
+                />
+                <h5>Избранное</h5>
+              </button>
+              <button>
+                <img
+                  src="https://img.icons8.com/?size=100&id=VZobQTqqGoaP&format=png&color=000000"
+                  alt="stream_btn_img"
+                />
+                <h5>Сайт фильма</h5>
+              </button>
             </div>
             <div className="container_text_info">
               <h3>О фильме</h3>

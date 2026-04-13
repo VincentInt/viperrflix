@@ -6,12 +6,17 @@ footer {
     align-items: start;
     justify-content: space-between;
     align-items: stretch;
+    gap: 10px;
     padding: 15px 45px;
     border: 1px solid white;
     border: 1.5px solid rgba(255, 255, 255, 0.111);
     border-radius: 12px;
     background-color: rgba(24, 24, 27, 0.619);
     backdrop-filter: blur(10px);
+    h6 {
+      font-size: clamp(11px, 2vw, 20px);
+      font-weight: 500;
+    }
     .container_column {
       display: flex;
       flex-direction: column;
@@ -19,9 +24,10 @@ footer {
       gap: 5px;
       .container_flex {
         display: flex;
-        gap: clamp(10px, 2vw, 15px);
+        gap: clamp(5px, 2vw, 45px);
       }
       .links {
+        flex-wrap: wrap;
         justify-content: right;
         a {
           display: flex;
@@ -45,7 +51,6 @@ footer {
 @media (max-width: 960px) {
   footer {
     margin: 0px 20px;
-
     .container_footer {
       padding: clamp(10px, 1.2vw, 15px) clamp(12px, 3.5vw, 45px);
     }
@@ -54,5 +59,8 @@ footer {
 @media (max-width: 580px) {
   footer {
     margin: 0px 10px;
+    .container_footer {
+      align-items: center;
+    }
   }
 }

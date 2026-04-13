@@ -44,9 +44,6 @@ const LoadingShortCard = forwardRef<HTMLDivElement>((_, ref) => {
             <div className="btn_loading">
               <div className="glow"></div>
             </div>
-            <div className="btn_loading">
-              <div className="glow"></div>
-            </div>
           </div>
         </div>
       </div>

@@ -200,7 +200,7 @@ const Registr = () => {
         document.cookie.split("userData=")[1],
       ) as CookiesType;
       if (cookie.loginStatus) {
-        navigate("/");
+        navigate("/profile");
       }
     }
   }, []);

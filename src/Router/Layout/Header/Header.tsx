@@ -2,7 +2,7 @@ import "./Header.css";
 import imgSearchIcon from "../../../../public/img/icon/Vector.png";
 import imgBurgerMenuIcon from "../../../../public/img/icon/icons8-гамбургер-меню-50.png";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 
 type CookiesType = {
@@ -18,6 +18,7 @@ const Header = () => {
 
   const headerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 580) {
@@ -65,7 +66,7 @@ const Header = () => {
     setInputSearch(event.target.value);
   }
   function onSendInput(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code === "Enter") {
+    if (e.key === "Enter" && inputSearch.length) {
       navigate(`search/${inputSearch}`);
       setInputSearch("");
       (e.target as HTMLInputElement).blur();
@@ -76,6 +77,11 @@ const Header = () => {
       return !prev;
     });
   }
+  useEffect(() => {
+    if (statusBurger !== null) {
+      setStatusBurger(false);
+    }
+  }, [location]);
   useEffect(() => {
     if (document.cookie.length > 0) {
       const cookie = JSON.parse(
@@ -122,6 +128,7 @@ const Header = () => {
               onKeyUp={onSendInput}
               type="text"
               placeholder="Поиск"
+              enterKeyHint="search"
             />
             <Link to={`search/${inputSearch}`} className="btn_search">
               <img src={imgSearchIcon} alt="img_search_input" />
@@ -150,12 +157,24 @@ const Header = () => {
               <img src={imgSearchIcon} alt="img_search_input" />
             </Link>
           </div>
-          <Link to={"/collection/movies/trending"}>
-            <h5>Все фильмы</h5>
+          <Link to={"/"}>
+            <h5>Главная</h5>
           </Link>
-          <Link to={"/collection/shows/trending"}>
-            <h5>Все сериалы</h5>
+          <Link to={"/compilation"}>
+            <h5>Подборка</h5>
           </Link>
+          <Link to={"/favorite"}>
+            <h5>Избранное</h5>
+          </Link>
+          {login.length ? (
+            <Link to={"/profile"}>
+              <h5>{login}</h5>
+            </Link>
+          ) : (
+            <Link to={"/login"}>
+              <h5>Войти</h5>
+            </Link>
+          )}
         </nav>
       </div>
     </header>

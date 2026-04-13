@@ -16,12 +16,12 @@ const Banner = () => {
   );
   const [stateSlider, setStateSlider] = useState<number>(0);
   const [animationMove, setAnimationMove] = useState<false | number>(false);
-  const [moveStatus, setMoveStatus] = useState<boolean>(true);
+
 
   useEffect(() => {
     setTimeout(() => {
       setDataPopularMovies(dataMovies.trending.slice(0, 10));
-    }, 5000);
+    }, 1500);
   }, []);
   useEffect(() => {
     if (typeof animationMove === "number") {
@@ -29,29 +29,15 @@ const Banner = () => {
         setAnimationMove(false);
         onMoveSlider(animationMove);
       }, 800);
-      setTimeout(() => {
-        setMoveStatus(true);
-      }, 2200);
     }
   }, [animationMove]);
 
   function onChangeClickBtnSlider(move: number) {
-    if (animationMove === false && moveStatus) {
-      setAnimationMove(move);
-      setMoveStatus(false);
-    }
+    setAnimationMove(move);
+
   }
   function onMoveSlider(move: number) {
-    const indexMove = stateSlider + move;
-    const dataBannerLength = dataPopularMovies.length - 1;
-
-    if (indexMove > dataBannerLength) {
-      setStateSlider(0);
-    } else if (indexMove < 0) {
-      setStateSlider(dataBannerLength);
-    } else {
-      setStateSlider(indexMove);
-    }
+    setStateSlider(move);
   }
   return (
     <section className="container_banner">

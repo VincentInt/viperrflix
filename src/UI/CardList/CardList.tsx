@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import type { TraktResponse } from "../../utils/type/TraktType";
 import LoadingShortCard from "../CardMovies/LoadingShortCard/LoadingShortCard";
 import cryImg from "../../../public/img/crying-sad.gif";
+import favoriteImg from "../../../public/img/victoria.gif";
+
 import "./CardList.css";
 import {
   useEffect,
@@ -23,6 +25,7 @@ type Props = {
   paramsUrl: string;
   statusMore?: boolean;
   statusClear?: boolean;
+  statusClearFavorite?: boolean;
   renderCard: (
     item: TraktResponse,
     index: number,
@@ -38,6 +41,7 @@ const CardList = ({
   statusMore = true,
   renderCard,
   statusClear = false,
+  statusClearFavorite = false,
   setStatePage,
   statePage,
 }: Props) => {
@@ -49,7 +53,7 @@ const CardList = ({
   useEffect(() => {
     setTimeout(() => {
       setDataCardsTrakt([...data]);
-    }, 5000);
+    }, 1500);
   }, [data]);
 
   useEffect(() => {
@@ -75,7 +79,12 @@ const CardList = ({
         {statusClear ? (
           <div className="container_clear">
             <h2>Нечего подходящего не нашлось(</h2>
-            <img src={cryImg} alt="" />
+            <img src={cryImg} alt="cry_img" />
+          </div>
+        ) : statusClearFavorite ? (
+          <div className="container_clear favorite">
+            <h2>Вы нечего не добавили в избранное</h2>
+            <img src={favoriteImg} alt="" />
           </div>
         ) : (
           <div className="container_cards">

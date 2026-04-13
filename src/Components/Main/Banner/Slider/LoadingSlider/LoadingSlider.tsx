@@ -15,20 +15,12 @@ const LoadingSlider = () => {
       style={
         isMobile && window.visualViewport?.height
           ? {
-              marginBottom: `${window.screen.height - window.visualViewport?.height}px`,
+              marginBottom: `${(window.screen.height - window.visualViewport?.height) }px`,
             }
-          : { marginBottom: `30px` }
+          : { marginBottom: `35px` }
       }
       className="container_banner_nav_load"
     >
-      <div className="container_btn">
-        <div className="loading load_title">
-          <div className="glow"></div>
-        </div>
-        <div className="loading load_title">
-          <div className="glow"></div>
-        </div>
-      </div>
       <div className="container_window">
         <div className="container_state_img_page">
           <div className="loading load_title">

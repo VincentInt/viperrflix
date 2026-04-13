@@ -1,32 +1,40 @@
 .section_form {
   display: flex;
   justify-content: center;
-  padding-top: clamp(100px, 25vw, 150px);
-  margin: 0px clamp(10px, 12vw, 300px);
+  min-height: 75vh;
   form {
-    min-width: 50%;
-    margin-top: 35px;
+    margin: 0px clamp(10px, 12vw, 300px);
+    margin-top: clamp(100px, 35vw, 185px);
+    width: 100%;
+    max-width: 600px;
+    height: fit-content;
     padding: 45px 45px;
+
     border: 1.5px solid rgba(255, 255, 255, 0.111);
     border-radius: 12px;
     background-color: rgba(24, 24, 27, 0.619);
     backdrop-filter: blur(10px);
+
     .title {
       text-align: center;
     }
+
     .container_input {
       display: flex;
       flex-direction: column;
       margin-top: 60px;
       gap: 30px;
+
       label {
         display: flex;
         flex-direction: column;
         gap: 3px;
+
         h6 {
           color: red;
         }
       }
+
       input,
       button {
         outline: none;
@@ -37,6 +45,7 @@
         backdrop-filter: blur(10px);
         background-color: rgba(24, 24, 27, 0.619);
       }
+
       button {
         background-color: white;
 
@@ -46,6 +55,7 @@
         }
       }
     }
+
     .container_link {
       display: flex;
       justify-content: center;
@@ -53,9 +63,31 @@
       flex-direction: column;
       margin-top: 30px;
       gap: 10px;
+
       button {
         padding: 12px 25px;
       }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .section_form {
+    margin: 0px;
+    padding-top: clamp(100px, 25vw, 150px);
+
+    form {
+      max-width: none;
+      margin: 0px 20px;
+      padding: clamp(12px, 3.5vw, 45px) clamp(12px, 3.5vw, 45px);
+    }
+  }
+}
+@media (max-width: 580px) {
+  .section_form {
+    form {
+      max-width: none;
+      margin: 0px 10px;
     }
   }
 }

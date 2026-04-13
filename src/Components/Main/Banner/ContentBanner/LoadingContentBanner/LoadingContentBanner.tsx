@@ -25,9 +25,6 @@ const LoadingContentBanner = () => {
         <div className="loading load_small_btn">
           <div className="glow"></div>
         </div>
-        <div className="loading load_small_btn">
-          <div className="glow"></div>
-        </div>
       </div>
     </div>
   );

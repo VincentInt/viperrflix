@@ -1,5 +1,5 @@
 .container_banner_nav_load {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   .container_btn {
     .loading {
       max-width: 50px;
@@ -8,15 +8,15 @@
     }
   }
   .container_state_img_page {
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: clamp(35px, 3vw, 70px);
     gap: 8px;
     .loading {
-      max-width: 150px;
-      width: 100%;
-      height: clamp(100px, 26vw, 220px);
+      width: clamp(100px, 25vw, 160px);
+      height: clamp(90px, 15vw, 220px);
     }
   }
   .loading {

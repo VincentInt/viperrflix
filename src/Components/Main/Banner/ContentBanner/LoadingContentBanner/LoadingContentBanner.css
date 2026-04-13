@@ -1,11 +1,11 @@
 .container_info_page_load {
   .load_title {
     width: 40%;
-    height: clamp(25px, 8vw, 40px);
+    height: clamp(30px, 8vw, 50px);
   }
   .load_container_info {
     max-width: 850px;
-    height: clamp(25px, 8vw, 40px);
+    height: clamp(30px, 8vw, 50px);
   }
   .load_p_text_description {
     max-width: 850px;
@@ -13,7 +13,7 @@
   }
   .load_btn,
   .load_small_btn {
-    max-width: 230px;
+    max-width: 200px;
     width: 100%;
     height: clamp(30px, 8vw, 50px);
   }
